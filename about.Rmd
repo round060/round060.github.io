@@ -1,0 +1,9 @@
+---
+title: "About"
+---
+
+<font size="4"> 
+<center>
+The navigation bar on this website provides access to my resume, recent work, publications, awards, Github, LinkedIn, and email for contact. Feel free to email me with any inquiries or opportunities you would like to share.  
+</center>
+</font>

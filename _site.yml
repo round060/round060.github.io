@@ -1,0 +1,17 @@
+name: "Yay internet!"
+header-includes: 
+  \usepackage{graphicx}
+  \usepackage{float}
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: about.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<round060@umn.edu>
+    - icon: fa-github fa-lg
+      href: http://github.com/round060/
+output:  
+   html_document:
+    theme: flatly

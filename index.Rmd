@@ -1,0 +1,21 @@
+---
+title: "Christopher Rounds"
+---
+
+<div style= "float : left; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
+![](./photos/Headshot.JPG)
+
+</div>
+
+<font size = "4"> 
+My name is Christopher Rounds and I am a Masters student in the Conservation sciences Department at the University of Minnesota Twin Cities. Currently I study how we can use Environmental DNA (eDNA) to detect aquatic invasive species. 
+</font>  
+  
+  
+  
+<font size = "4">
+*Paragraph 2*  
+</font>
+
+>"A quote" - Somebody
+
