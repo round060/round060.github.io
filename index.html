@@ -13,7 +13,7 @@
 
 <title>Christopher Rounds</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -82,6 +83,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -234,7 +238,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -246,7 +250,22 @@ $(document).ready(function () {
         
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Professional Documents
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resume.html">Resume/CV</a>
+    </li>
+    <li>
+      <a href="flexdashboard_template.html">Recent Work</a>
+    </li>
+  </ul>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
@@ -258,6 +277,12 @@ $(document).ready(function () {
 <li>
   <a href="http://github.com/round060/">
     <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/christopher-rounds-6a9b19189/">
+    <span class="fa fa-brands fa-linkedin"></span>
      
   </a>
 </li>
@@ -278,12 +303,9 @@ $(document).ready(function () {
 <div style="float : left; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
 <p><img src="photos/Headshot.JPG" /></p>
 </div>
-<p><font size = "4"> My name is Christopher Rounds and I am a Masters student in the Conservation sciences Department at the University of Minnesota Twin Cities. Currently I study how we can use Environmental DNA (eDNA) to detect aquatic invasive species. </font></p>
-<p><font size = "4"> <em>Paragraph 2</em><br />
+<p><font size = "4"> My name is Christopher Rounds and I am an aquatic ecologist interested in aquatic ecosystems and how humans influence these ecosystems. Currently, I am a MS student in the <a href="https://conssci.umn.edu/">Conservation Sciences Department</a> at the University of Minnesota Twin Cities. For my MS I study how we can use Environmental DNA (eDNA) to detect aquatic invasive species. This project is funded through the Minnesota Aquatic Invasive Species Research Center and you can read more about it on the <a href="https://maisrc.umn.edu/edna-monitoring">MAISRC webpage</a>. </font></p>
+<p><font size = "4"> When I am not working busy with research or classes, I enjoy playing video games, cooking, destroying my knees playing soccer and exploring the great outdoors!<br />
 </font></p>
-<blockquote>
-<p>“A quote” - Somebody</p>
-</blockquote>
 
 
 

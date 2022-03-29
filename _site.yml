@@ -6,12 +6,20 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
+    - text: "Professional Documents"
+      menu:
+        - text: "Resume/CV"
+          href: resume.html
+        - text: "Recent Work"
+          href: flexdashboard_template.html
     - text: "About"
       href: about.html
     - icon: fa-envelope fa-lg
       href: mailto:<round060@umn.edu>
     - icon: fa-github fa-lg
       href: http://github.com/round060/
+    - icon: fa-brands fa-linkedin
+      href: https://www.linkedin.com/in/christopher-rounds-6a9b19189/
 output:  
    html_document:
     theme: flatly

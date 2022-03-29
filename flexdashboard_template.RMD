@@ -1,0 +1,229 @@
+---
+title: "Flex Dashboard"
+author: "Christopher Rounds"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+<style type="text/css"> .sidebar { overflow: auto; } </style>
+```{r setup, include = FALSE, echo = FALSE}
+library(tidyverse)
+library(lubridate)
+library(gt)
+library(paletteer)
+library(plotly)
+library(flexdashboard)
+
+#Working directory for .RMD
+knitr::opts_knit$set(echo = TRUE,
+                     root.dir = rprojroot::find_rstudio_root_file())
+
+#Controlling figure output in markdown
+knitr::opts_chunk$set(
+#  fig.height =   
+  fig.width = 6,
+#  fig.asp = .5,
+  out.width = "90%",
+#  out.height = 
+ fig.align  = "center",
+  cache = FALSE,
+  eval  = TRUE,
+  echo  = TRUE,
+  warning = FALSE
+)
+
+#My Colours (from viridis)
+my_purple <- "#440154FF"
+my_yellow <- "#FDE725FF"
+
+#Set Theme for ggplot2
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom"))
+
+#Set Scientific notation output and decimal places for knitr
+options(scipen = 999)
+options(digits = 4)
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r data_read, include = FALSE}
+data <- read.csv("./data/brfss_smart_2010.csv")
+clean_data <- data %>%
+  janitor::clean_names() %>%
+  filter(topic == "Overall Health") %>%
+  rename(state = locationabbr) %>%
+  mutate(county = str_split(locationdesc, '-', simplify = TRUE)[,2], 
+         prop_responses = data_value/100, # turn percent responses into proportion
+         state = as.factor(state), # convert variables to factors when appropriate
+         county = as.factor(county),
+         response = as.factor(response)) %>%
+  dplyr::select(year, state, county, response, sample_size, prop_responses) 
+  # chose the variables we are interested in
+
+temp = clean_data %>%
+  group_by(state, year) %>% # create our groups of staes over year
+  distinct(county) %>% # how many counties per year in each state
+  count() %>% # count em up!
+  ungroup() %>% # ungroup so we can reorder the states
+  mutate(state = fct_reorder(as.factor(state), n, mean, .desc = TRUE))
+  # order the states by the mean number of observations in descending order
+
+brfss.plotly <- temp %>%
+  plot_ly(
+    x = ~ year,
+    y = ~n,
+    type  = "scatter", 
+    mode  = "lines",
+    hoverinfo = "text",
+    text  = ~paste('</br> State: ', state,
+                      '</br> # Sites: ', n,
+                      '</br> Year: ', year),
+    alpha = 0.4,
+    color = ~state
+  ) %>%
+  layout(
+    #title  = "BRFSS Number of sites per state from 2002-2010",
+    xaxis  = list(title = "Year"),
+    yaxis  = list(title = "Number of Sites")
+  )
+```
+
+```{r laker_data, include = FALSE}
+data(lakers)
+
+#Convert to date/times appropriately
+lakers.df <- lakers %>%
+  mutate(
+    date    = ymd(date),
+    time    = ms(time),
+    etype   = as.factor(etype),
+    type    = case_when(
+               type %in% "3pt"           ~ "3 Pointer",
+               str_detect(type, "layup") ~ "Layup",
+               str_detect(type, "dunk")  ~ "Dunk",
+               str_detect(type, "jump")  ~ "Jumpshot",
+               TRUE                      ~ "Other"
+              ),
+    month   = month(date, label = TRUE, abbr = TRUE),
+    dow     = wday(date, #day of the week
+                   label = TRUE, #return name i.e "Friday"
+                   abbr  = FALSE, #Return full name
+                   week_start = getOption("lubridate.week.start", 1)), #1 = Monday
+    quarter = period
+  ) %>%
+  dplyr::select(-period)
+
+#Remove lakers for clarity
+remove(lakers)
+
+
+shots.quarter <- lakers.df %>%
+  filter(etype %in% "shot", quarter == c(1:4)) %>%
+  group_by(date, quarter, type) %>%
+  summarise(
+    `# Shots` = n()
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Type    = str_to_title(type) %>%
+              as.factor() %>%
+              fct_reorder(`# Shots`, .desc = TRUE),
+    quarter = str_c("Quarter ", quarter) %>%
+              as_factor()
+  ) %>%
+  ggplot(aes(x = date, y = `# Shots`, colour = Type)) +
+  geom_point(alpha    = 0.16,
+             shape    = 16,
+             size     = 2,
+             position = position_jitter(width = .2, #no Jitter
+                                        height = .2)) +
+  stat_smooth(method  = "loess", 
+              formula = "y ~ x",
+              se      = FALSE,
+              span    = 0.5,
+              alpha   = 0.44) +
+    labs(
+      x = "Date",
+      y = "Number of Shots",
+      title = "Number of Shots by Type and Quarter (Lakers 08-09)"
+    ) +
+    scale_colour_viridis_d("Type of Shot") +
+    scale_x_date( #The date equiv of scale_x_continuous
+    date_breaks = "1 month", #Breaks
+    date_minor_breaks = "1 week", #Little lines in between
+    date_labels = "%b " #Label for the date
+    ) +
+    facet_wrap(~quarter, ncol = 2)
+
+
+options(scipen = 9)
+made.quarter <- lakers.df %>%
+  filter(etype %in% "shot", quarter %in% 1:4) %>%
+  group_by(date, quarter, type) %>%
+  summarise(
+    `Shooting %` = mean((result %in% "made")) * 100
+  ) %>%
+  ungroup() %>%
+  mutate(
+    Type    = str_to_title(type) %>%
+              as.factor() %>%
+              fct_reorder(`Shooting %`, .desc = TRUE),
+    quarter = str_c("Quarter ", quarter) %>%
+              as_factor()
+  ) %>%
+  ggplot(aes(x = date, y = `Shooting %`, colour = Type)) +
+  geom_point(alpha    = 0.16,
+             shape    = 16,
+             size     = 2,
+             position = position_jitter(width  = 0, 
+                                        height = 0.05)) +
+  stat_smooth(method  = "loess", 
+              formula = "y ~ x",
+              se      = FALSE,
+              span    = 0.5,
+              alpha   = 0.44) +
+    labs(
+      x = "Date",
+      y = "Shooting Percentage"
+      #title = "Shooting Percentage by Type and Quarter (Lakers 08-09)"
+    ) +
+    scale_colour_viridis_d("Type of Shot") +
+    scale_x_date( #The date equiv of scale_x_continuous
+    date_breaks = "1 month", #Breaks
+    date_minor_breaks = "1 month", #Little lines in between
+    date_labels = "%b " #Label for the date
+    ) +
+    facet_wrap(~quarter, ncol = 2)
+
+
+```
+
+Page 1 {style="position:relative;"}
+========================================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### La Lakers number of shots by shot type and quarter (2008-2009)
+
+```{r, fig.height=4, fig.width=5}
+ggplotly(shots.quarter, tooltip = c("# Shots", "Type"))
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### LA lakers shooting % by shot type and quarter (2008-2009)
+
+```{r, fig.height=4, fig.width=5}
+ggplotly(made.quarter, tooltip = c("Shooting %", "Type"))
+```
+
+Page 2 {style="position:relative;"}
+========================================================
+### Number of sites in BRFSS database by state
+
+```{r, fig.height=3, fig.width=5, fig.asp=.7}
+brfss.plotly
+```
+
