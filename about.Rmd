@@ -2,8 +2,44 @@
 title: "About"
 ---
 
+
 <font size="4"> 
 <center>
-The navigation bar on this website provides access to my resume, recent work, publications, awards, Github, LinkedIn, and email for contact. Feel free to email me with any inquiries or opportunities you would like to share.  
+Instead of talking about myself I would prefer to show some cool photos of experiences I've had (mainly while doing fieldwork) over the last couple of years. I hope you enjoy!
+</center>
+</font>
+
+<div style= "float : left; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
+![](./photos/seining.JPG)
+<font size="4"> 
+<center>
+This is a photo of a group of high school students, Minnesota Master naturalists, Mark Hove and myself doing some seining in the upper St. Croix river. This fish we collected were used in freshwater mussel host suitability trials. Probably the best experience an undergrad could ask for!
+</center>
+</font>
+</div>
+
+<div style= "float : right; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
+![](./photos/sunny.JPG)
+<font size="4"> 
+<center>
+Here is a beautiful sunfish that we captured. Look at those breeding colors!
+</center>
+</font>
+</div>
+
+#<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<div style= "float : left; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
+![](./photos/sharks.JPG)
+</div>
+
+<div style= "float : right; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
+![](./photos/lotsosharks.JPG)
+</div>
+
+<font size="4"> 
+<center>
+This is me diving of the coast of Roatan, an island off the coast of Honduras. This is the first time I dove with sharks and I recommend it to everyone.
 </center>
 </font>
