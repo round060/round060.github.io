@@ -48,6 +48,7 @@ options(dplyr.summarise.inform = FALSE)
 
 ```{r data_read, include = FALSE}
 data <- read.csv("./data/brfss_smart_2010.csv")
+#This was all taken from my Homework
 clean_data <- data %>%
   janitor::clean_names() %>%
   filter(topic == "Overall Health") %>%
@@ -90,7 +91,7 @@ brfss.plotly <- temp %>%
 
 ```{r laker_data, include = FALSE}
 data(lakers)
-
+#This was all taken from Lecture
 #Convert to date/times appropriately
 lakers.df <- lakers %>%
   mutate(
