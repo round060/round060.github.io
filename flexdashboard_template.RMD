@@ -8,12 +8,14 @@ output:
 ---
 <style type="text/css"> .sidebar { overflow: auto; } </style>
 ```{r setup, include = FALSE, echo = FALSE}
+#rmarkdown::render("flexdashboard_template.RMD", output_format = "flexdashboard::flex_dashboard")
 library(tidyverse)
 library(lubridate)
 library(gt)
 library(paletteer)
 library(plotly)
 library(flexdashboard)
+library(htmltools, quietly = TRUE)
 
 #Working directory for .RMD
 knitr::opts_knit$set(echo = TRUE,
@@ -48,7 +50,7 @@ options(dplyr.summarise.inform = FALSE)
 
 ```{r data_read, include = FALSE}
 data <- read.csv("./data/brfss_smart_2010.csv")
-#This was all taken from my Homework
+#This was all taken from my Homework and I used Plot_ly notation for this
 clean_data <- data %>%
   janitor::clean_names() %>%
   filter(topic == "Overall Health") %>%
@@ -87,6 +89,7 @@ brfss.plotly <- temp %>%
     xaxis  = list(title = "Year"),
     yaxis  = list(title = "Number of Sites")
   )
+
 ```
 
 ```{r laker_data, include = FALSE}

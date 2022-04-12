@@ -1,0 +1,127 @@
+---
+title: "MN Spatial Dashboard"
+author: "Christopher Rounds"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include = FALSE, echo = FALSE}
+#rmarkdown::render("MN_spatial_dashboard.RMD", output_format = "flexdashboard::flex_dashboard")
+library(tidyverse)
+library(lubridate)
+library(gt)
+library(paletteer)
+library(plotly)
+library(flexdashboard)
+library(osmdata)
+library(leaflet)
+library(htmltools)
+library(viridis, quietly = TRUE)
+
+#Working directory for .RMD
+knitr::opts_knit$set(echo = TRUE,
+                     root.dir = rprojroot::find_rstudio_root_file())
+
+#Controlling figure output in markdown
+knitr::opts_chunk$set(
+#  fig.height =   
+  fig.width = 6,
+#  fig.asp = .5,
+  out.width = "90%",
+#  out.height = 
+ fig.align  = "center",
+  cache = FALSE,
+  eval  = TRUE,
+  echo  = TRUE,
+  warning = FALSE
+)
+
+#My Colours (from viridis)
+my_purple <- "#440154FF"
+my_yellow <- "#FDE725FF"
+
+#Set Theme for ggplot2
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom"))
+
+#Set Scientific notation output and decimal places for knitr
+options(scipen = 999)
+options(digits = 4)
+options(dplyr.summarise.inform = FALSE)
+```
+
+
+```{r data_read, include = FALSE}
+#available_tags("shop") #florist, 
+
+osm_shop_sf.df <- opq(bbox = "minnesota") %>%
+             add_osm_feature(key = "shop", value = c("bakery", "convenience", "coffee", "pastry")) %>%
+  osmdata_sf()
+
+shop_points.df <- osm_shop_sf.df$osm_points %>% 
+  janitor::clean_names() %>%
+  filter(!is.na(shop)) %>% #only retain 'valid' tags
+  dplyr::select(osm_id, name, shop, opening_hours, phone, website, geometry) %>%
+  mutate(shop = str_to_title(shop) %>% as_factor())
+
+#Extract the levels/order of shop type factor
+shop_types <- levels(shop_points.df$shop)
+n_types    <- length(shop_types)
+
+#Initialize our colour pallete (discrete in this case)
+my_pallete <- colorFactor(viridis_pal(option = "D")(n_types), domain = shop_types)
+
+#Add a text label like normal
+shop_label.df <- shop_points.df %>%
+  mutate(text_label = str_c(name,
+                            "<br/>Store Type: ", shop))
+
+#Redisplay the leaflet
+mn_leaflet <- leaflet(data = shop_label.df) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addCircleMarkers(
+    color   = ~my_pallete(shop_types),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.4, #alpha
+    weight  = 2, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Store Type",
+    position = "bottomright",
+    colors   = viridis_pal(option = "D")(n_types),
+    labels   = shop_types 
+  )
+```
+
+MN shops {style="position:relative;"}
+========================================================
+
+Column {data-width=1000}
+-----------------------------------------------------------------------
+
+### Bakeries, Coffee shops, Convenience Stores, and Pastry Stores Around Minnesota
+
+```{r, echo = FALSE}
+mn_leaflet
+```
+
+Census data {style="position:relative;"}
+========================================================
+
+Column {data-width = 500}
+-----------------------------------------------------------------------
+### Chart
+
+```{r}
+
+```
+
+Column {data-width = 500}
+-----------------------------------------------------------------------
+### Chart
+```{r}
+
+```
+

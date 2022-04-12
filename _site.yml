@@ -6,12 +6,16 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
+    - text: "Recent Work"
+      menu:
+        - text: "Flex Dashboard"
+          href: flexdashboard_template.html
+        - text: "Spatial Dashboard"
+          href: MN_spatial_dashboard.html
     - text: "Professional Documents"
       menu:
-        - text: "Resume/CV"
+        - text: "CV/Resume"
           href: resume.html
-        - text: "Recent Work"
-          href: flexdashboard_template.html
     - text: "About"
       href: about.html
     - icon: fa-envelope fa-lg
