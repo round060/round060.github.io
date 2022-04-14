@@ -19,6 +19,12 @@ library(osmdata)
 library(leaflet)
 library(htmltools)
 library(viridis, quietly = TRUE)
+library(tidycensus)
+library(ggmap)
+library(ggthemes)
+library(sf)
+library(ggsn)
+
 
 #Working directory for .RMD
 knitr::opts_knit$set(echo = TRUE,
@@ -52,11 +58,11 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 
-```{r data_read, include = FALSE}
+```{r leaflet, include = FALSE}
 #available_tags("shop") #florist, 
 
 osm_shop_sf.df <- opq(bbox = "minnesota") %>%
-             add_osm_feature(key = "shop", value = c("bakery", "convenience", "coffee", "pastry")) %>%
+             add_osm_feature(key = "shop", value = c("bakery", "convenience", "coffee")) %>%
   osmdata_sf()
 
 shop_points.df <- osm_shop_sf.df$osm_points %>% 
@@ -95,13 +101,114 @@ mn_leaflet <- leaflet(data = shop_label.df) %>%
   )
 ```
 
+```{r census, include = FALSE}
+hennepin_rent_df <- get_acs(
+  geography = "tract",
+  variables = "B25064_001", #Code for median age (B19013_001 - median income) (B01002_001 - age)
+  state     = "MN",
+  county    = "Hennepin",
+  year      = 2020,
+  geometry  = TRUE)
+
+#v17 <- load_variables(2020, "acs5", cache = TRUE) #check variables
+
+mn_rent_plotly.df <- hennepin_rent_df %>%
+  mutate(tract = str_split(NAME, ",") %>%
+                 map_chr(1) %>%
+                 str_remove("Census Tract "),
+    text_label = str_c("Tract: ", tract,
+                  "\nMedian Rent: ", scales::dollar(estimate)))
+st_crs(mn_rent_plotly.df)
+
+mn.box <- osmdata::getbb("minnesota")
+hennepin.box <- osmdata::getbb("hennepin")
+hennepin.outline <- osmdata::getbb("hennepin", format_out = "polygon")[[1]] %>%
+  as_tibble() %>%
+  rename(longitude = V1, latitude = V2)
+
+
+#Get map from ggmap
+#Get the base map (foundational layer)
+mn_base.map <- get_map(location = hennepin.box, source = "google", maptype = "roadmap", crop = TRUE)
+
+#Create the base map
+hennepin_base.gg <- ggmap(mn_base.map) +
+  geom_polygon(data = hennepin.outline, aes(x = longitude, y = latitude), 
+               colour = "black", size = 1.6, alpha = 0.1) +
+  theme_map() +
+  theme(plot.title = element_text(size  = 16, hjust = 0.5),
+    legend.text = element_text(size = 16),
+    legend.title = element_text(size = 16),
+    legend.position = "right")
+
+coord_ggmap <- st_crs(hennepin_base.gg) #NA
+coord_sf    <- st_crs(mn_rent_plotly.df) #NAD83
+
+#Overlay the sf info from tidycensus ACS income estimates
+mn_rent.ggmap <- hennepin_base.gg +  
+  geom_sf(data = mn_rent_plotly.df, 
+          aes(fill = estimate, text = text_label),
+          colour = "black", size = 0.1,
+          inherit.aes = FALSE) + 
+  labs(title = "Hennepin County, MN 2020 ACS Median Gross Rent") + 
+  scale_fill_viridis_c("Median Rent Estimate", labels = scales::dollar) +
+  theme_map() +
+  theme(
+    plot.title   = element_text(size  = 16, hjust = 0.5),
+    legend.text  = element_text(size = 16),
+    legend.title = element_text(size = 16),
+    legend.position = "right")
+
+```
+
+
+```{r lakes, include = FALSE}
+## The Reason I didn't try and use ggmap was because it already shows lakes and makes the map look weird because the lake shapefiles and ggmaps don't overlap and have different lakes
+lakes <- st_read("./data/lake_bathymetric_outline.shp", quiet = TRUE) %>%
+  janitor::clean_names() %>%
+  mutate(cty_name = str_to_title(cty_name)) %>%
+  dplyr::filter(cty_name %in% c("Hennepin", "Ramsey"), 
+                acres > 1)
+ 
+lakes <- lakes %>% 
+  distinct(dowlknum, .keep_all = T) %>%
+  mutate(tooltip_text = str_c(lake_name,
+                              "\nLake Perimeter (feet): ", round(perfeet, digits = 1),
+                              "\nSurface area (acres): ", round(acres, digits = 1)))
+
+lakes <- lakes %>% st_transform(crs = 4326)
+
+ramsey_henn <- map_data("county", "Minnesota") %>%
+  dplyr::filter(subregion %in% c("hennepin", "ramsey"))
+#st_crs(lakes)
+
+lakes_mn <- ggplot() +
+  geom_polygon(data = ramsey_henn, aes(x = long, y = lat, group = group), 
+               fill = "black", color = "white", alpha = .75) +
+  coord_fixed(1.3) +
+  geom_sf(data = lakes, aes(fill = log(acres), text = tooltip_text),
+          colour = "lightblue3", size = 0.2,
+          inherit.aes = FALSE) + 
+  scale_fill_viridis_c("Log Lake Area (Acres)") +
+  theme_map() +
+  labs(x = "Longitude", y = "Latitude") +
+  theme(plot.title = element_text(size  = 16, hjust = 0.5)) + 
+  ggsn::scalebar(data = lakes, dist = 5, dist_unit = "mi", st.size = 2, 
+                        transform = TRUE, model = 'WGS84', height = 0.01, location = "bottomright",
+                        box.color = c("black", "grey"))
+
+mn_lakes_plotly <- ggplotly(lakes_mn,
+                            tooltip = "text") 
+
+```
+
 MN shops {style="position:relative;"}
 ========================================================
 
 Column {data-width=1000}
 -----------------------------------------------------------------------
 
-### Bakeries, Coffee shops, Convenience Stores, and Pastry Stores Around Minnesota
+### Bakeries, Coffee shops, and Convenience Stores Around Minnesota
 
 ```{r, echo = FALSE}
 mn_leaflet
@@ -110,18 +217,24 @@ mn_leaflet
 Census data {style="position:relative;"}
 ========================================================
 
-Column {data-width = 500}
+Column {data-width = 1000}
 -----------------------------------------------------------------------
-### Chart
+### Rent in Hennepin County, MN
 
-```{r}
-
+```{r, echo=FALSE}
+ggplotly(mn_rent.ggmap,
+         tooltip = "text") %>%
+    style(hoveron = "fills")
 ```
 
-Column {data-width = 500}
------------------------------------------------------------------------
-### Chart
-```{r}
+Hennepin Lakes {style="position:relative;"}
+========================================================
 
+Column {data-width = 1000}
+-----------------------------------------------------------------------
+### Lakes in Hennepin and Ramsey County, MN Colored by Lake Area
+
+```{r, echo=FALSE}
+mn_lakes_plotly
 ```
 
