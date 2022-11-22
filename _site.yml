@@ -24,6 +24,8 @@ navbar:
       href: http://github.com/round060/
     - icon: fa-brands fa-linkedin
       href: https://www.linkedin.com/in/christopher-rounds-6a9b19189/
+    - icon: fa-brands fa-twitter
+      href: https://twitter.com/CR46_
 output:  
    html_document:
     theme: flatly

@@ -77,7 +77,6 @@ St. Paul, MN
 
 2021 - 2023
 
-G.P.A - 4.0
 
 
 Research Experience {data-icon=laptop}
@@ -91,7 +90,7 @@ St. Paul, MN
 
 Present - 2021
 
-- Developed and carried out sampling protocols for AIS eDNA in 20 Minnesota lakes with supervision from Dr. [Gretchen Hansen](https://fwcb.cfans.umn.edu/people/gretchen-hansen).
+- Developed and carried out sampling protocols for AIS eDNA in 21 Minnesota lakes with supervision from Dr. [Gretchen Hansen](https://fwcb.cfans.umn.edu/people/gretchen-hansen).
 - Performed literature reviews on topics such as eDNA, anthropogenic factors impacting walleye and yellow perch populations, and copper impacts on freshwater organisms. 
 
 ### Junior Scientist
@@ -181,6 +180,16 @@ N/A
 
 Selected Presentations {data-icon=edit}
 --------------------------------------------------------------------------------
+
+### Digitizing Lake depth data using ImageJ
+
+Joint Aquatic Sciences Meeting
+
+Grand Rapids, Mi
+
+2022
+
+*Rounds C*, Vitense K, Hansen G.
 
 ### Optimizing eDNA for Multiple AIS detections.
 
