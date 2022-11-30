@@ -1,0 +1,484 @@
+---
+title: "Flex Dashboard"
+author: ""
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
+---
+<style type="text/css"> .sidebar { overflow: auto; } </style>
+
+<style type="text/css">
+  body{
+  font-size: 12pt;
+}
+</style>
+```{r setup, include = FALSE, echo = FALSE}
+#rmarkdown::render("lake_ice_flexdashboard.RMD", output_format = "flexdashboard::flex_dashboard")
+library(tidyverse)
+library(ggplot2)
+library(leaflet)
+library(htmltools)
+library(lubridate)
+library(mgcv)
+library(gratia)
+library(gamm4)
+library(itsadug)
+
+#Working directory for .RMD
+knitr::opts_knit$set(echo = TRUE,
+                     root.dir = rprojroot::find_rstudio_root_file())
+
+#Controlling figure output in markdown
+knitr::opts_chunk$set(
+#  fig.height =   
+  fig.width = 6,
+#  fig.asp = .5,
+  out.width = "90%",
+#  out.height = 
+ fig.align  = "center",
+  cache = FALSE,
+  eval  = TRUE,
+  echo  = TRUE,
+  warning = FALSE
+)
+
+#Set Theme for ggplot2
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5),
+                             plot.subtitle = element_text(hjust = 0.5),
+                             legend.position = "bottom"))
+
+#Set Scientific notation output and decimal places for knitr
+options(scipen = 999)
+options(digits = 4)
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r durationclean, include = FALSE}
+# Duration Data
+duration_spatial <- read.csv("./mn/data/lake/duration_spatial.csv")
+
+#Create Duration histogram
+duration_histo <- duration_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  ggplot() +
+  geom_bar(aes(x = n), color = "red3",fill = "darksalmon") +
+  xlab("Lakes with this many Ice Duration Observations") +
+  ylab("Number of Years with Ice Duration Observations") + 
+  labs(title = "Lakes with Ice Duration Records", 
+       subtitle = str_c(nrow(duration_spatial), " Observations from ",
+                        length(unique(duration_spatial$DOW)), " Lakes"))
+
+# Create Leaflet of Average duration
+# start with Text Label
+duration_map <- duration_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_duration = mean(duration),
+            Observations = n) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(text_label = str_c(
+                   pw_basin_n,
+                   "<br/>Lake ID: ",
+                   DOW,
+                   "<br/>Mean Ice Duration: ",
+                   round(mean_duration, digits = 1), " Days",
+                   "<br/>Number of Observations: ",
+                   Observations))
+# Pallete for coloring lake points
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = duration_map$mean_duration)
+
+#Initialize the leaflet
+duration_leaflet <- leaflet(data = duration_map) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addCircleMarkers(
+    color   = ~pal(mean_duration),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.6, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Ice Duration (Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_duration, 
+    opacity = .9)
+
+# create ggplot of linear models for duration by time
+observations_dur <- duration_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  dplyr::filter(n >= 10)
+  
+length(unique(observations_dur$DOW))
+sum(observations_dur$n)
+
+#create df with 10+ lakes that have 10+ years of data
+duration_model <- duration_spatial %>%
+  filter(DOW %in% observations_dur$DOW) %>%
+  mutate(DOW = as.factor(DOW))
+
+#ggplot of ice duration
+duration_lm <- duration_model %>%
+  ggplot(aes(x = year_out, y = duration, color = DOW)) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth", se = F) +
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Ice Duration (Days)") +
+  labs(title = "Linear Models of Ice Duration Over Time", 
+       subtitle = str_c("Each Line Represents a Different Lake. 
+                        Only Includes Lakes with 10+ Years of Observations (",
+                        length(unique(duration_model$DOW)), " Lakes, ",
+                        nrow(duration_model), " Observations)"))
+```
+
+
+```{r iceinclean, include = FALSE}
+# read Ice-In data
+icein_spatial <- read.csv("./mn/data/lake/ice_in_spatial.csv")
+icein_spatial <- icein_spatial %>%
+  mutate(date_in = as.Date(date_in),
+         jd_in = ifelse(jd_in < 60, jd_in + 365, jd_in))
+
+# Create Ice-in Histogram
+icein_histo <- icein_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  ggplot() +
+  geom_bar(aes(x = n), color = "red3",fill = "darksalmon") +
+  xlab("Number of Years of Ice-in Observations") +
+  ylab("Number of Lakes") + 
+  labs(title = "Lakes with Ice-in Records", 
+       subtitle = str_c(nrow(icein_spatial), " Observations from ",
+                        length(unique(icein_spatial$DOW)), " Lakes"))
+
+# Create Leaflet of Average Ice-on
+icein_map <- icein_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_icein = mean(jd_in),
+            Observations = n,
+            icein_date = as.Date(mean_icein, 
+                                origin = as.Date("1960-01-01"))) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(
+    text_label = str_c(pw_basin_n,
+                       "<br/>Lake ID: ", DOW,
+                       "<br/>Mean Ice-In Date: ",
+                       format(icein_date, "%d-%B"),
+                       "<br/>Number of Observations: ",
+                       Observations))
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = icein_map$mean_icein, 
+  reverse = TRUE)
+
+#initialize the leaflet
+icein_leaflet <- leaflet(data = icein_map) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addCircleMarkers(
+    color   = ~pal(mean_icein),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.6, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Average Ice-On (Julian Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_icein, 
+    opacity = .9)
+
+
+# create ggplot of linear models for Ice-on by time colored by lake
+observations_on <- icein_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  dplyr::filter(n >= 15) #chose lakes with 15+ years of data
+  
+length(unique(observations_on$DOW))
+sum(observations_on$n)
+
+#filter the data frame to include only lakes with 15+ years of data
+iceon_model <- icein_spatial %>%
+  filter(DOW %in% observations_on$DOW) %>%
+  mutate(DOW = as.factor(DOW))
+
+#ggplot of ice-on
+icein_lm <- iceon_model %>%
+  ggplot(aes(x = year_in, y = jd_in, color = DOW)) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth", se = F) +
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Ice On (Julian Days)") +
+  labs(title = "Linear Models of Ice-On Over Time", 
+       subtitle = "Each Line Represents a Different Lake.
+       Only Includes Lakes with 15+ Years of Observations (266 lakes, 6,009 Observations)") 
+```
+
+```{r iceoffclean, include=FALSE}
+#read data
+iceoff_spatial <- read.csv("./mn/data/lake/ice_out_spatial.csv")
+
+#create histogram of ice-off data
+iceoff_histo <- iceoff_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  ggplot() +
+  geom_bar(aes(x = n), color = "red3",fill = "darksalmon") +
+  xlab("Number of Years of Ice-off Observations") +
+  ylab("Number of Lakes") + 
+  labs(title = "Lakes with Ice-off Records", 
+       subtitle = str_c(nrow(iceoff_spatial), " Observations from ",
+                        length(unique(iceoff_spatial$DOW)), " Lakes"))
+
+iceoff_map <- iceoff_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_iceoff = mean(jd_out),
+            Observations = n,
+            iceoff_date = as.Date(mean_iceoff, 
+                                origin = as.Date("1960-01-01"))) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(
+    text_label = str_c(pw_basin_n,
+                       "<br/>Lake ID: ", DOW,
+                       "<br/>Mean Ice-Off Date: ",
+                       format(iceoff_date, "%d-%B"),
+                       "<br/>Number of Observations: ",
+                       Observations))
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = iceoff_map$mean_iceoff)
+
+#Redisplay the leaflet
+iceoff_leaflet <- leaflet(data = iceoff_map) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addCircleMarkers(
+    color   = ~pal(mean_iceoff),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.6, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Average Ice-Off (Julian Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_iceoff, 
+    opacity = .9)
+
+
+observations_off <- iceoff_spatial %>%
+  group_by(DOW) %>%
+  count() %>%
+  dplyr::filter(n >= 25)
+  
+length(unique(observations_off$DOW))
+sum(observations_off$n)
+
+iceoff_model <- iceoff_spatial %>%
+  filter(DOW %in% observations_off$DOW) %>%
+  mutate(DOW = as.factor(DOW))
+
+iceoff_lm <- iceoff_model %>%
+  ggplot(aes(x = year_out, y = jd_out, color = DOW)) +
+  stat_smooth(method = "lm",
+              formula = y ~ x,
+              geom = "smooth", se = F) +
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Ice Off (Julian Days)") +
+  labs(title = "Linear Models of Ice-Off Over Time", 
+       subtitle = "Each Line Represents a Different Lake.
+       Only Includes Lakes with 25+ Years of Observations (190 lakes, 9,114 Observations)") 
+```
+
+
+
+
+Ice Duration {style="position:relative;"}
+========================================================
+
+### <b><font face="Georgia" size="4em" color="#000000">About Lake Ice Data</font></b>
+  The lake ice data you can find here is almost entirely collected by community scientists and submitted to the Minnesota DNR. The definition of when lake ice comes on or goes off varies from lake to lake. Some reporters consider lake ice to be off when the lake is 100% ice free, while others consider ice to be off when certain sections of the lake are navigable by boats. The important thing is that observers use consistent criteria when determining when lake ice goes on or comes off. Community scientist reporting lake ice data allows for observations on many more lakes then researchers would be able to record!
+  
+### <b><font face="Georgia" size="6em" color="#000000">Ice Duration Histogram</font></b>
+
+```{r durationhisto, fig.width=10, fig.height=8, echo=FALSE}
+duration_histo
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Spatial Scatterplot of Mean Ice Duration</font></b>
+
+```{r duration_leaflet, fig.width=10, fig.height=8, echo=FALSE}
+duration_leaflet
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Ice Data Submission</font></b>
+Scroll around and checkout lakes you know! Don't see your lake? Consider submitting ice data from your lake to the Minnesota DNR Climatology Office. All you need to do is post the Lake name, county and date on the [MN DNR Climatology Facebook Page](https://www.facebook.com/MinnesotaStateClimatologyOffice).  
+
+
+
+### <b><font face="Georgia" size="6em" color="#000000">Trends of Ice Duration</font></b>
+
+```{r duration_trends, fig.width=10, fig.height=8, echo=FALSE}
+duration_lm
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Trends of Ice Duration Comments</font></b>
+This plot does a nice job of showing the lake to lake variability. There are lakes that have ice duration decreasing rapidly and lakes that have an increase in ice duration. Some lakes have long term data (150+ years) and some lake only have data from 2010-2020. One way to account for this messy data is to use non-linear mixed models. Non-linear because the decrease the change in ice duration likely isn't the same in 1960 as it is in 2020. Mixed models simply mean we account for repeated measurements from the same lakes. The plot below indicates the statewide trend in ice duration. If you are interested in the gritty modeling details feel free to check out the "modeling" tab on the main page.
+
+### <b><font face="Georgia" size="6em" color="#000000">Modeled Trends in Minnesota Ice Duration</font></b>
+
+```{r modeled_duration, fig.width=10, fig.height=8, echo=FALSE}
+gam_duration <- readRDS("./mn/data/lake/gam_duration_varied_15years.rds")
+
+year_seq <- seq(from = 1948,
+                to = 2021,
+                by = 1)
+ci_trend <- confint(gam_duration, type = 'simultaneous', parm = "s(winter_year)", 
+                    n = length(year_seq))
+duration_intercept <- gam_duration$coefficients[1]
+
+ggplot(data = ci_trend,
+       aes(x = winter_year, y = est + duration_intercept)) + 
+  geom_hline(yintercept = duration_intercept, col = 'red') +
+  geom_ribbon(aes(ymin = lower + duration_intercept, ymax = upper + duration_intercept), 
+              alpha = 0.2) + 
+  geom_line() + 
+  scale_y_continuous(name = "Duration of Ice Cover (days)") + 
+  xlab("Year") + 
+  labs(title = "Statewide trends In Lake Ice Duration From 1948 - 2021", 
+       subtitle = "Red line Indicates Statewide Mean Ice Duration
+       Grey ribbon is the 95% Confidence Interval") + 
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = 0.5),
+                             plot.subtitle = element_text(hjust = 0.5))
+
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Modeled Trends Comments</font></b>
+The way I would interpret this plot is by starting at the line on the left side. The ice duration from around 1950-1970 is around 140-145 days per year. Starting at 1970, ice duration begins to decrease rapidly. The timing of when ice duration starts to decrease also corresponds when we start to see an increase in air temperature due to climate change. The decrease is fairly steady throughout this time and by 2020 the ice duration has decreased to about 130 days per year.
+
+
+
+
+
+Ice-On {style="position:relative;"}
+========================================================
+
+### <b><font face="Georgia" size="6em" color="#000000">Ice-On Data Histogram</font></b>
+
+```{r iceonhisto, fig.width=10, fig.height=8, echo=FALSE}
+icein_histo
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Spatial Scatterplot of Ice-On</font></b>
+
+```{r icein_leaflet, fig.width=10, fig.height=8, echo=FALSE}
+icein_leaflet
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Trends of Ice-On</font></b>
+
+```{r iceon_trends, fig.width=10, fig.height=8, echo=FALSE}
+icein_lm
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Trends of Ice-On Comments</font></b>
+Once again this plot really illustrates the variability of lake ice. There is a whole lot going on near the start of the 21st century. What we would expect with climate change is that ice-on becomes later in the year (the line is increasing). It appears like many lakes have this trend but some lakes also seem to show lakes freezing earlier in the year. Below you can find what our models show (and once again the gritty details can be found on the "modeling" tab).
+
+### <b><font face="Georgia" size="6em" color="#000000">Modeled Trends in Minnesota Ice-On</font></b>
+
+```{r, modeled_iceon, fig.width=10, fig.height=8, echo=FALSE}
+gam_icein <- readRDS("./mn/data/lake/gam_in_varied_15years.rds")
+
+year_seq <- seq(from = 1948,
+                to = 2021,
+                by = 1)
+ci_trend <- confint(gam_icein, type = 'simultaneous', parm = "s(winter_year)", 
+                    n = length(year_seq))
+duration_intercept <- gam_icein$coefficients[1]
+
+ggplot(data = ci_trend,
+       aes(x = winter_year, y = est + duration_intercept)) + 
+  geom_hline(yintercept = duration_intercept, col = 'red') +
+  geom_ribbon(aes(ymin = lower + duration_intercept, 
+                  ymax = upper + duration_intercept), alpha = 0.2) + 
+  geom_line() + 
+  scale_y_continuous(name = "Day of Ice-On") +
+  xlab("Year") + 
+  labs(title = "Statewide trends In Lake Ice-On From 1948 - 2021", 
+       subtitle = "Red line Indicates Statewide Mean Ice-On
+       Grey ribbon is the 95% Confidence Interval") + 
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+
+
+
+
+
+Ice-Off {style="position:relative;"}
+========================================================
+
+### <b><font face="Georgia" size="6em" color="#000000">Ice-Off Histogram</font></b>
+
+```{r iceoffhisto, fig.width=10, fig.height=8, echo=FALSE}
+iceoff_histo
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Spatial Scatterplot of Mean Ice-On</font></b>
+
+```{r iceoff_leaflet, fig.width=10, fig.height=8, echo=FALSE}
+iceoff_leaflet
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Trends of Ice-Off</font></b>
+
+```{r iceoff_trends, fig.width=10, fig.height=8, echo=FALSE}
+iceoff_lm
+```
+
+### <b><font face="Georgia" size="6em" color="#000000">Modeled Trends in Minnesota Ice-Off</font></b>
+
+```{r, modeled_iceout, fig.width=10, fig.height=8, echo=FALSE}
+gam_iceout <- readRDS("./mn/data/lake/gam_out_varied_15years.rds")
+
+year_seq <- seq(from = 1948,
+                to = 2021,
+                by = 1)
+ci_trend <- confint(gam_iceout, type = 'simultaneous', parm = "s(winter_year)", 
+                    n = length(year_seq))
+out_intercept <- gam_iceout$coefficients[1]
+
+ggplot(data = ci_trend,
+       aes(x = winter_year, y = est + out_intercept)) + 
+  geom_hline(yintercept = out_intercept, col = 'red') +
+  geom_ribbon(aes(ymin = lower + out_intercept, 
+                  ymax = upper + out_intercept), alpha = 0.2) + 
+  geom_line() + 
+  scale_y_continuous(name = "Day of Ice-Off") +
+  xlab("Year") + 
+  labs(title = "Statewide trends In Lake Ice-Off From 1948 - 2021", 
+       subtitle = "Red line Indicates Statewide Mean Ice-Off
+       Grey ribbon is the 95% Confidence Interval") + 
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```

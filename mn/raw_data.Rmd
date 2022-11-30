@@ -1,0 +1,424 @@
+---
+title: "raw-data"
+author: "Christopher Rounds"
+date: "2/9/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#remotes::install_github("mnsentinellakes/mnsentinellakes") 
+# will install alot of packages
+library(mnsentinellakes)
+library(tidyverse)
+library(ggplot2)
+library(sf)
+library(sp)
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(echo = TRUE,
+                     root.dir = rprojroot::find_rstudio_root_file())
+
+ice_in <- read.csv("./data/uncleaned/lake_ice_in_all_2020.csv")
+ice_out <- read.csv("./data/uncleaned/lake_ice_out_all_2021.csv")
+
+
+#format ENSO NOAA data (https://psl.noaa.gov/data/climateindices/)
+old_enso <- read.table("./data/uncleaned/old_enso.txt") # has enso data pre 1948 (starts in 1872) 
+colnames(old_enso) <- c("year", paste(1:12))
+
+new_enso <- read.table("./data/uncleaned/enso.txt") # starts in 1948
+colnames(new_enso) <- c("year", "index")
+new_enso$month <- round((new_enso$year %% 1)*12) + 1
+new_enso$year <- floor(new_enso$year)
+new_enso <- new_enso %>% pivot_wider(names_from = "month", values_from = "index")
+
+enso <- rbind(old_enso %>% filter(year < 1948), new_enso)
+
+#from NOAA and climate service
+#(https://spaceweather.gc.ca/forecast-prevision/solar-solaire/solarflux/sx-5-en.php)
+#NOAA data is from 1948 - 2019
+# climate service data is from 2005 - 2022
+
+solar_flux <- read.table("./data/uncleaned/solar_flux_noaa.txt")
+colnames(solar_flux) <- c("year", "index")
+solar_flux$month <- round((solar_flux$year %% 1)*12) + 1
+solar_flux$year <- floor(solar_flux$year)
+solar_flux <- solar_flux %>% 
+  pivot_wider(names_from = "month", values_from = "index") %>%
+  dplyr::filter(year < 2019)
+  
+new_solar_flux <- read.table("./data/uncleaned/solflux_monthly_average.txt")
+colnames(new_solar_flux) <- c("year", "month", "index", "adjindex", "absflux")
+new_solar_flux <- new_solar_flux %>% 
+  dplyr::filter(year > 2018) %>% 
+  select(year, month, index) %>%
+  mutate(index = index * 10) %>%
+  pivot_wider(names_from = "month", values_from = "index")
+
+solar_flux <- rbind(solar_flux, new_solar_flux)
+
+#Quasi Biennial Oscillation (https://psl.noaa.gov/data/climateindices/)
+qbo <- read.table("./data/uncleaned/QBO.txt")
+colnames(qbo) <- c("year", "index")
+qbo$month <- round((qbo$year %% 1)*12) + 1
+qbo$year <- floor(qbo$year)
+qbo <- qbo %>% pivot_wider(names_from = "month", values_from = "index")
+
+
+pdo <- read.table("./data/uncleaned/PDO.txt")
+colnames(pdo) <- c("year", "index")
+pdo$month <- round((pdo$year %% 1)*12) + 1
+pdo$year <- floor(pdo$year)
+pdo <- pdo %>% pivot_wider(names_from = "month", values_from = "index")
+```
+
+
+Dow is the unique ID for MN lakes. Its a 8-digit number. If the last digit is a 0 the dow is for the whole lake, otherwise it is a basin (69000001 is a basin, 69000000 is the whole lake). DOWs can start with zero which can be a problem for excel because leading zeroes are dropped. The function mnsentinellakes::fixlakeid() fixes the leading zero problem and is *necessary* if you are doing some kind of matching.
+
+```{r ice}
+ice_in <- ice_in %>%
+  dplyr::select(date, lake.id) %>%
+  rename(DOW = lake.id, date_in = date) %>%
+  mutate(DOW = fixlakeid(DOW),
+         date_in = as.Date(date_in, "%m/%d/%Y"),
+         jd_in = as.numeric(format(date_in, "%j")),
+         year_in = as.numeric(format(date_in, "%Y")),
+         winter_year = ifelse(jd_in > 270, year_in, year_in - 1)) %>%
+  dplyr::distinct(DOW, winter_year, .keep_all = TRUE)
+
+ice_out <- ice_out %>%
+  dplyr::select(date, lake.id) %>%
+  rename(DOW = lake.id, date_out = date) %>%
+  mutate(DOW = fixlakeid(DOW),
+         date_out = as.Date(date_out, "%m/%d/%Y"),
+         jd_out = as.numeric(format(date_out, "%j")),
+         year_out = as.numeric(format(date_out, "%Y")),
+         winter_year = year_out - 1) %>%
+  dplyr::distinct(DOW, winter_year, .keep_all = TRUE)
+
+ice_data <- inner_join(ice_in, ice_out, by = c("DOW", "winter_year")) %>%
+  mutate(duration = jd_out + (365 - jd_in))
+
+leap_year <- seq(1860, 2022, by = 4)
+ice_data$duration = NA
+for (i in 1:nrow(ice_data)) {
+  if (ice_data[i, "jd_in"] < 270) {
+    ice_data[i, "duration"] = ice_data[i, "jd_out"] - ice_data[i, "jd_in"]
+  } #end if
+  else{
+    ice_data[i, "duration"] = ice_data[i, "jd_out"] + (365 - ice_data[i, "jd_in"])
+  } #end else
+  if (ice_data[i, "year_in"] %in% leap_year) {
+    ice_data[i, "duration"] = 1 + ice_data[i, "duration"]
+  }
+}
+
+#write.csv(ice_out, file = "./data/cleaned/ice_out.csv", row.names = FALSE)
+#write.csv(ice_in, file = "./data/cleaned/ice_in.csv", row.names = FALSE)
+#write.csv(ice_data, file = "./data/cleaned/ice_duration.csv", row.names = FALSE)
+
+```
+We have `r length(unique(ice_in$DOW))` lakes with ice in dates. More lakes have ice out dates with a total of `r length(unique(ice_out$DOW))` lakes. Obviously you need ice-on dates and ice-off dates to get duration so we have the fewest duration measurements (with a total of `r length(unique(ice_data$DOW))` different lakes)
+
+```{r spatialdata}
+MN.shape <-  readRDS("./mn/data/uncleaned/mndow_lakes_sf_allDataUntransformed.rds")
+spatial_cov <- read.csv("./mn/data/uncleaned/SPATIAL_COVARIATES.csv")
+# ecoregion data came from a spatial join with this (https://gaftp.epa.gov/EPADataCommons/ORD/Ecoregions/mn/mn_eco_l4.htm)
+ecoregion <- read.csv("./mn/data/uncleaned/ecoregions.csv")
+# Reproject
+
+st_crs(MN.shape) <- sf::st_crs(MN.shape)
+MN.shape <- MN.shape %>% st_transform(x, crs = 4326)
+
+all_dows <- unique(c(ice_in$DOW, ice_out$DOW))
+MN.shape <- MN.shape %>% filter(dowlknum %in% all_dows)
+
+
+#converts the UTM that was used in the OG file to lat long because I like lat long
+utm <- data.frame(MN.shape$center_utm, MN.shape$center_u_1)
+sputm <- SpatialPoints(utm, proj4string = CRS("+proj=utm +zone=15 +datum=WGS84"))  
+spgeo <- spTransform(sputm, CRS("+proj=longlat +datum=WGS84"))
+latlong <- as.data.frame(spgeo)
+
+
+match_lakes <- MN.shape %>% 
+  select(dowlknum, acres, shore_mi, pw_basin_n) %>%
+  mutate( long = latlong$MN.shape.center_utm,
+          lat = latlong$MN.shape.center_u_1) %>%
+  rename(DOW = dowlknum)
+
+# for some reason Gull lake (DOW = 11030500) has lat/longs that are deep in Canada, fixed manually
+match_lakes$long[match_lakes$DOW == 11030500] = -94.331989
+match_lakes$lat[match_lakes$DOW == 11030500] = 46.452864
+
+spatial_cov$DOW <- fixlakeid(spatial_cov$DOW)
+spatial_cov <- spatial_cov %>% filter(DOW %in% match_lakes$DOW) %>%
+  select(DOW, DOW_CDOM)
+
+spatial_data <- merge(spatial_cov, match_lakes, by = "DOW", all = "TRUE") %>%
+  subset(select = -(geometry)) %>% #removes sp object geometry may want to keep if we plot?
+  arrange(pw_basin_n) %>%
+  dplyr::filter(!grepl('(Canada)', pw_basin_n)) %>% #removes border waters
+  distinct(DOW, .keep_all = TRUE) #removes double listed ids (ex. lake pepin)
+
+colnames(ecoregion)[1] <- "DOW"
+ecoregion$DOW <- fixlakeid(ecoregion$DOW)
+ecoregion$US_L4NAME[ecoregion$DOW == 25000100] = "Blufflands and Coulees"
+ecoregion$US_L3NAME[ecoregion$DOW == 25000100] = "Driftless Area"
+
+spatial_data <- merge(spatial_data, ecoregion, by = "DOW", all = "TRUE")
+
+rm(utm);rm(sputm);rm(spgeo);rm(MN.shape);rm(match_lakes)
+```
+
+```{r depthdata}
+#depth data from https://gisdata.mn.gov/dataset/water-lake-bathymetry
+depth_data <- readRDS("./mn/data/uncleaned/MN_bathy.rds")
+
+depth_data <- depth_data %>%
+  filter(DOW %in% spatial_data$DOW)
+
+maxdepth_lake <- data.frame("DOW" = character(1), "max_depth" = numeric(1), 
+                            stringsAsFactors = FALSE)
+
+# Extract max_depth from every lake that ice data exists for 
+max_depth = depth_data[1,1]; DOW = depth_data[1,3]; i = 1
+for (row in 1:nrow(depth_data)) {
+  if (DOW != depth_data[row,3]) {
+    maxdepth_lake[i,1] = DOW
+    maxdepth_lake[i,2] = max_depth
+    i = i + 1
+    DOW = depth_data[row,3]
+    max_depth = depth_data[row,3]
+  }
+  else {
+    max_depth = depth_data[row, 1]
+  }
+}
+maxdepth_lake[i,1] = DOW; maxdepth_lake[i,2] = max_depth
+manual_maxdepth <- data.frame("DOW" = c("04013000", "43004000", "86013400", "27011900", "56033500", 
+                                        "19002100", "56063900", "38024200", "27001400", "29020800",
+                                        "69037800", "27065500", "29001500", "11035600", "16062900",
+                                        "31053600", "34003200", "10009500", "69129500","11020100", 
+                                        "16013900", "31043800", "80003700", "1009300","18032300", 
+                                        "69129400", "56024300", "77015400", "31021400","31037200", 
+                                        "18023900", "18007000", "31057100", "52000100", "03038702",
+                                        "01009300", "77014901", "34016900", "03059500", 
+                                        "11020300", "18032001", "21008100","29012600", "31062100", 
+                                        "31065000", "56030201", "56086700", "27005700"), 
+                              "max_depth" = c(76, 10, 56, 7, 81, 37, 24, 24, 39, 76, 16, 34, 29, 145, 
+                                              40, 26, 35, 12, 64, 54, 130, 58, 22, 24, 46, 286, 62, 37, 
+                                              16, 53, 23, 88, 69, 35, 32, 24, 36, 15, 16, 150, 45, 9, 
+                                              49, 30, 32, 43, 39, 6), 
+                            stringsAsFactors = FALSE)
+manual_maxdepth$max_depth = manual_maxdepth$max_depth/3.281
+
+# add max_depth to the spatial_data frame to merge with ice data later
+spatial_data <- merge(spatial_data, maxdepth_lake, by = "DOW", all = "TRUE") %>%
+  mutate(max_depth = as.numeric(max_depth))
+
+for (i in 1:nrow(spatial_data)) {
+  if (spatial_data[i,]$DOW %in% manual_maxdepth$DOW) {
+    depth = manual_maxdepth[which(manual_maxdepth$DOW == spatial_data[i,]$DOW), 2]
+    spatial_data[i,]$max_depth = depth
+  }
+}
+
+rm(maxdepth_lake); rm(max_depth); rm(manual_maxdepth)
+```
+
+
+```{r combine}
+ice_out_spatial <- inner_join(ice_out, spatial_data, by = "DOW")
+
+ice_out_spatial$ENSO <- NA
+ice_out_spatial$QBO <- NA
+ice_out_spatial$SUN <- NA
+ice_out_spatial$ENSOw <- NA
+ice_out_spatial$QBOw <- NA
+ice_out_spatial$SUNw <- NA
+
+for (i in 1:nrow(ice_out_spatial)) {
+  # Year out averages
+  if (ice_out_spatial$year_out[i] %in% enso$year) 
+    ice_out_spatial$ENSO[i] <- rowMeans(enso[enso$year == ice_out_spatial$year_out[i], 2:13])
+  if (ice_out_spatial$year_out[i] %in% qbo$year) 
+    ice_out_spatial$QBO[i] <- rowMeans(qbo[qbo$year == ice_out_spatial$year_out[i], 2:13])
+  if (ice_out_spatial$year_out[i] %in% solar_flux$year)
+    ice_out_spatial$SUN[i] <- rowMeans(solar_flux[solar_flux$year == ice_out_spatial$year_out[i], 2:13])
+  
+  # Oct-May averages: winter.year=months 1-5 (cols 2-6), fall.year=months 10-12 (cols 11-13)
+  if (ice_out_spatial$year_out[i] %in% enso$year & ice_out_spatial$winter_year[i] %in% enso$year)
+    ice_out_spatial$ENSOw[i] <- rowMeans(cbind(enso[enso$year == ice_out_spatial$winter_year[i], 11:13],
+                                           enso[enso$year == ice_out_spatial$year_out[i], 2:6]))
+  if (ice_out_spatial$year_out[i] %in% qbo$year & ice_out_spatial$winter_year[i] %in% qbo$year)
+    ice_out_spatial$QBOw[i] <- rowMeans(cbind(qbo[qbo$year == ice_out_spatial$winter_year[i], 11:13], 
+                                             qbo[qbo$year == ice_out_spatial$year_out[i], 2:6]))
+  if (ice_out_spatial$year_out[i] %in% solar_flux$year & ice_out_spatial$winter_year[i] %in% solar_flux$year)
+    ice_out_spatial$SUNw[i] <- rowMeans(cbind(solar_flux[solar_flux$year == ice_out_spatial$winter_year[i], 11:13], 
+                                             solar_flux[solar_flux$year == ice_out_spatial$year_out[i], 2:6]))
+}
+#write.csv(ice_out_spatial, file = "./mn/data/lake/ice_out_spatial.csv", row.names = FALSE)
+
+
+duration_spatial <- inner_join(ice_data, spatial_data, by = "DOW")
+
+duration_spatial$ENSO <- NA
+duration_spatial$QBO <- NA
+duration_spatial$SUN <- NA
+duration_spatial$PDO <- NA
+duration_spatial$ENSOw <- NA
+duration_spatial$QBOw <- NA
+duration_spatial$SUNw <- NA
+duration_spatial$PDOw <- NA
+duration_spatial$ENSOfw <- NA
+duration_spatial$QBOfw <- NA
+duration_spatial$SUNfw <- NA
+duration_spatial$PDOfw <- NA
+
+for (i in 1:nrow(duration_spatial)) {
+  # Year out averages
+  if (duration_spatial$year_out[i] %in% enso$year) 
+    duration_spatial$ENSO[i] <- rowMeans(enso[enso$year == duration_spatial$year_out[i], 2:13])
+  if (duration_spatial$year_out[i] %in% qbo$year) 
+    duration_spatial$QBO[i] <- rowMeans(qbo[qbo$year == duration_spatial$year_out[i], 2:13])
+  if (duration_spatial$year_out[i] %in% solar_flux$year)
+    duration_spatial$SUN[i] <- rowMeans(solar_flux[solar_flux$year == duration_spatial$year_out[i], 2:13])
+  if (duration_spatial$year_out[i] %in% pdo$year)
+    duration_spatial$PDO[i] <- rowMeans(pdo[pdo$year == duration_spatial$year_out[i], 2:13])
+  # Oct-May averages: winter.year=months 1-5 (cols 2-6), fall.year=months 10-12 (cols 11-13)
+  if (duration_spatial$year_out[i] %in% enso$year & duration_spatial$winter_year[i] %in% enso$year)
+    duration_spatial$ENSOw[i] <- rowMeans(cbind(enso[enso$year == duration_spatial$winter_year[i], 11:13],
+                                           enso[enso$year == duration_spatial$year_out[i], 2:6]))
+  if (duration_spatial$year_out[i] %in% qbo$year & duration_spatial$winter_year[i] %in% qbo$year)
+    duration_spatial$QBOw[i] <- rowMeans(cbind(qbo[qbo$year == duration_spatial$winter_year[i], 11:13], 
+                                             qbo[qbo$year == duration_spatial$year_out[i], 2:6]))
+  if (duration_spatial$year_out[i] %in% solar_flux$year & duration_spatial$winter_year[i] %in% solar_flux$year)
+    duration_spatial$SUNw[i] <- rowMeans(cbind(solar_flux[solar_flux$year == duration_spatial$winter_year[i], 11:13], 
+                                             solar_flux[solar_flux$year == duration_spatial$year_out[i], 2:6]))
+  if (duration_spatial$year_out[i] %in% pdo$year & duration_spatial$winter_year[i] %in% pdo$year)
+    duration_spatial$PDOw[i] <- rowMeans(cbind(pdo[pdo$year == duration_spatial$winter_year[i], 11:13], 
+                                             pdo[pdo$year == duration_spatial$year_out[i], 2:6]))
+    # for ice out anything past December doesn't matter so only take September - December averages
+  if (duration_spatial$year_in[i] %in% enso$year)
+    duration_spatial$ENSOfw[i] <- rowMeans(enso[enso$year == duration_spatial$year_in[i], 10:13])
+  if (duration_spatial$year_in[i] %in% qbo$year)
+    duration_spatial$QBOfw[i] <- rowMeans(qbo[qbo$year == duration_spatial$year_in[i], 10:13])
+  if (duration_spatial$year_in[i] %in% solar_flux$year)
+    duration_spatial$SUNfw[i] <- rowMeans(solar_flux[solar_flux$year == duration_spatial$year_in[i], 10:13])
+  if (duration_spatial$year_in[i] %in% pdo$year)
+    duration_spatial$PDOfw[i] <- rowMeans(pdo[pdo$year == duration_spatial$year_in[i], 10:13])
+}
+#write.csv(duration_spatial, file = "./mn/data/lake/duration_spatial.csv", row.names = FALSE)
+
+
+ice_in_spatial <- inner_join(ice_in, spatial_data, by = "DOW")
+
+ice_in_spatial$ENSO <- NA
+ice_in_spatial$QBO <- NA
+ice_in_spatial$SUN <- NA
+ice_in_spatial$ENSOfw <- NA
+ice_in_spatial$QBOfw <- NA
+ice_in_spatial$SUNfw <- NA
+
+for (i in 1:nrow(ice_in_spatial)) {
+    # Year out averages
+  if (ice_in_spatial$year_in[i] %in% enso$year) 
+    ice_in_spatial$ENSO[i] <- rowMeans(enso[enso$year == ice_in_spatial$year_in[i], 2:13])
+  if (ice_in_spatial$year_in[i] %in% qbo$year) 
+    ice_in_spatial$QBO[i] <- rowMeans(qbo[qbo$year == ice_in_spatial$year_in[i], 2:13])
+  if (ice_in_spatial$year_in[i] %in% solar_flux$year)
+    ice_in_spatial$SUN[i] <- rowMeans(solar_flux[solar_flux$year == ice_in_spatial$year_in[i], 2:13])
+  
+  # for ice out anything past December doesn't matter so only take September - December averages
+  if (ice_in_spatial$year_in[i] %in% enso$year)
+    ice_in_spatial$ENSOfw[i] <- rowMeans(enso[enso$year == ice_in_spatial$year_in[i], 10:13])
+  if (ice_in_spatial$year_in[i] %in% qbo$year)
+    ice_in_spatial$QBOfw[i] <- rowMeans(qbo[qbo$year == ice_in_spatial$year_in[i], 10:13])
+  if (ice_in_spatial$year_in[i] %in% solar_flux$year)
+    ice_in_spatial$SUNfw[i] <- rowMeans(solar_flux[solar_flux$year == ice_in_spatial$year_in[i], 10:13]) 
+}
+
+#write.csv(ice_in_spatial, file = "./mn/data/lake/ice_in_spatial.csv", row.names = FALSE)
+```
+  
+I wrote out csv files for ice in, ice out and ice duration twice. Why you might ask? The join of ice data with spatial covariates ends up dropping a couple of lakes because we don't have spatial information for every lake. For example, ice duration is recorded on   `r length(unique(ice_data$DOW))` lakes in total but after the join with spatial data we only have `r length(unique(duration_spatial$DOW))` unique lakes. I want to include as many lakes as possible for the visualization purposes but want only complete cases for modeling purposes.
+
+
+# save yourself the headache and dont uncomment this code!
+```{r pull_temps}
+'
+# really should only run this the first time, these files take a long time to download/parse
+#Bias Corrected Spatially Downscaled Monthly CMIP5 Climate Projections
+#https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/
+#http://forecast.bcccsm.ncc-cma.net/web/channel-43.html
+
+
+
+#this is the data I used https://cida.usgs.gov/thredds/catalog.html?dataset=cida.usgs.gov/loca_future
+#good tutorial on what im doing
+#https://waterdata.usgs.gov/blog/locadownscaling 
+library(geoknife)
+
+
+
+
+stencil <- webgeom("state::Minnesota")
+
+#for each scenario (rcp) we want max and min temperature, two downloads for past four downloads for future.
+
+fabric_future <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_future")
+varList <- query(fabric_future,"variables")
+
+
+fabric_future_max_4.5 <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_future", 
+                         variables = "tasmax_ACCESS1-0_r1i1p1_rcp45")
+fabric_future_min_4.5 <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_future", 
+                         variables = "tasmin_ACCESS1-0_r1i1p1_rcp45")
+times(fabric_future_max_4.5) <- c("2006-01-01", "2101-01-01")
+job_max_4.5 <- geoknife(stencil, fabric_future_max_4.5, wait = TRUE)
+data_max_4.5 <- result(job_max_4.5)
+
+times(fabric_future_min_4.5) <- c("2006-01-01", "2101-01-01")
+job_min_4.5 <- geoknife(stencil, fabric_future_min_4.5, wait = TRUE)
+data_min_4.5 <- result(job_min_4.5)
+future_4.5 <- rbind(data_max_4.5, data_min_4.5)
+write.csv(future_4.5, file = "./data/uncleaned/future_temps_4.5.csv", row.names = FALSE)
+
+
+fabric_future_max_8.5 <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_future", 
+                                 variables = "tasmax_ACCESS1-0_r1i1p1_rcp85")
+times(fabric_future_max_8.5) <- c("2006-01-01", "2101-01-01")
+job_max_8.5 <- geoknife(stencil, fabric_future_max_8.5, wait = TRUE)
+data_max_8.5 <- result(job_max_8.5)
+
+
+fabric_future_min_8.5 <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_future", 
+                                 variables = "tasmin_ACCESS1-0_r1i1p1_rcp85")
+times(fabric_future_min_8.5) <- c("2006-01-01", "2101-01-01")
+job_min_8.5 <- geoknife(stencil, fabric_future_min_8.5, wait = TRUE)
+data_min_8.5 <- result(job_min_8.5)
+
+future_8.5 <- rbind(data_max_8.5, data_min_8.5)
+write.csv(future_8.5, file = "./data/uncleaned/future_temps_8.5.csv", row.names = FALSE)
+
+
+fabric_hist_max <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_historical", 
+                           variables = "tasmax_ACCESS1-0_r1i1p1_historical")
+times(fabric_hist_max) <- c("1950-01-01", "2006-01-01")
+job <- geoknife(stencil, fabric_hist_max, wait = TRUE)
+data <- result(job)
+
+fabric_hist_min <- webdata(url = "http://cida.usgs.gov/thredds/dodsC/loca_historical", 
+                           variables = "tasmin_ACCESS1-0_r1i1p1_historical")
+times(fabric_hist_min) <- c("1950-01-01", "2006-01-01")
+job <- geoknife(stencil, fabric_hist_min, wait = TRUE)
+data_min <- result(job)
+
+historical <- rbind(data, data_min)
+write.csv(historical, file = "./data/uncleaned/historical_air_temps.csv", row.names = FALSE)
+'
+```
+
+
+

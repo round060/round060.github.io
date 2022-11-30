@@ -1,0 +1,293 @@
+---
+title: "Flex Dashboard"
+author: ""
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
+---
+<style type="text/css"> .sidebar { overflow: auto; } </style>
+
+<style type="text/css">
+  body{
+  font-size: 12pt;
+}
+</style>
+
+```{r setup, include = FALSE, echo = FALSE}
+#rmarkdown::render("lake_ice_flexdashboard.RMD", output_format = "flexdashboard::flex_dashboard")
+library(tidyverse)
+library(ggplot2)
+library(leaflet)
+library(htmltools)
+library(lubridate)
+library(mgcv)
+library(gratia)
+library(gamm4)
+library(itsadug)
+library(sp)
+library(sf)
+library(rgdal)
+library(raster)
+library(gstat)
+library(viridis)
+
+
+#Working directory for .RMD
+knitr::opts_knit$set(echo = TRUE,
+                     root.dir = rprojroot::find_rstudio_root_file())
+
+#Controlling figure output in markdown
+knitr::opts_chunk$set(
+#  fig.height =   
+  fig.width = 6,
+#  fig.asp = .5,
+  out.width = "90%",
+#  out.height = 
+ fig.align  = "center",
+  cache = FALSE,
+  eval  = TRUE,
+  echo  = TRUE,
+  warning = FALSE
+)
+
+#Set Theme for ggplot2
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5),
+                             plot.subtitle = element_text(hjust = 0.5),
+                             legend.position = "bottom"))
+
+#Set Scientific notation output and decimal places for knitr
+options(scipen = 999)
+options(digits = 4)
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r durationclean, include = FALSE}
+# Duration Data
+duration_spatial <- read.csv("~/advR/ice.trends.github.io/mn/data/lake/duration_spatial.csv")
+
+
+# Create Leaflet of Average duration
+# start with Text Label
+duration_map <- duration_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_duration = mean(duration),
+            Observations = n) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(text_label = str_c(
+                   pw_basin_n,
+                   "<br/>Lake ID: ",
+                   DOW,
+                   "<br/>Mean Ice Duration: ",
+                   round(mean_duration, digits = 1), " Days",
+                   "<br/>Number of Observations: ",
+                   Observations))
+# Pallete for coloring lake points
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = duration_map$mean_duration)
+
+
+# creating interpolation map - using sp object
+
+mn_bbox <- readOGR("~/advR/ice.trends.github.io/mn/data/tl_2016_27_cousub.shp") # read in the shape file 
+
+mn_bbox <- spTransform(mn_bbox, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")) # make sure the data is projected correctly
+
+duration_map_idw <- duration_map %>% ungroup() %>% dplyr::select(lat,long,mean_duration) # keep just the variables of interest
+
+sp_duration <- SpatialPointsDataFrame(cbind(duration_map_idw$long, duration_map_idw$lat), data = duration_map_idw, proj4string = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")) #create the sp object
+
+sp_duration <- spTransform(sp_duration, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+
+samp <- spsample(x = mn_bbox, n = 1000000, type = "regular") # get sample plots for the interpolation
+
+duration_idw <- idw(formula = mean_duration ~ 1, locations = sp_duration, newdata = samp, idp = 2) # run interpolation - idp 2 is most common.
+
+raster_idw <- raster(nrow = length(unique(samp@coords[,1])), ncol = length(unique(samp@coords[,2]))) # create raster for the sample points
+
+extent(raster_idw) <- extent(duration_idw) # project to same system
+
+raster_idw <- rasterize(duration_idw, raster_idw, duration_idw$var1.pred) # turn predicted points to cells in raster
+
+duration_idw_leaflet <- leaflet(data = sp_duration) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addRasterImage(raster_idw, colors = pal(sp_duration$mean_duration), opacity = 0.5) %>% # add on the raster tile
+  addCircleMarkers(
+    data = duration_map,
+    color   = ~pal(mean_duration),
+    opacity = 1, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Ice Duration (Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_duration, 
+    opacity = 0.9)
+```
+
+
+```{r iceinclean, include = FALSE}
+# read Ice-In data
+icein_spatial <- read.csv("~/advR/ice.trends.github.io/mn/data/lake/ice_in_spatial.csv")
+icein_spatial <- icein_spatial %>%
+  mutate(date_in = as.Date(date_in),
+         jd_in = ifelse(jd_in < 60, jd_in + 365, jd_in))
+
+
+# Create Leaflet of Average Ice-on
+icein_map <- icein_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_icein = mean(jd_in),
+            Observations = n,
+            icein_date = as.Date(mean_icein, 
+                                origin = as.Date("1960-01-01"))) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(
+    text_label = str_c(pw_basin_n,
+                       "<br/>Lake ID: ", DOW,
+                       "<br/>Mean Ice-In Date: ",
+                       format(icein_date, "%d-%B"),
+                       "<br/>Number of Observations: ",
+                       Observations))
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = icein_map$mean_icein, 
+  reverse = TRUE)
+
+
+# creating interpolation map - using sp object
+
+
+icein_map_idw <- icein_map %>% ungroup() %>% dplyr::select(lat,long,mean_icein)
+
+sp_icein <- SpatialPointsDataFrame(cbind(icein_map_idw$long, icein_map_idw$lat), data = icein_map_idw, proj4string = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")) 
+
+sp_icein <- spTransform(sp_icein, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+
+icein_idw <- idw(formula = mean_icein ~ 1, locations = sp_icein, newdata = samp, idp = 2)
+
+raster_idw <- raster(nrow = length(unique(samp@coords[,1])), ncol = length(unique(samp@coords[,2])))
+
+extent(raster_idw) <- extent(icein_idw)
+
+raster_idw <- rasterize(icein_idw, raster_idw, icein_idw$var1.pred)
+
+icein_idw_leaflet <- icein_leaflet <- leaflet(data = sp_icein) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addRasterImage(raster_idw, colors = pal(sp_icein$mean_icein), opacity = 0.5) %>% 
+  addCircleMarkers(
+    data = icein_map,
+    color   = ~pal(mean_icein),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.6, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Average Ice-On (Julian Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_icein, 
+    opacity = .9)
+
+
+
+```
+
+```{r iceoffclean, include=FALSE}
+#read data
+iceoff_spatial <- read.csv("~/advR/ice.trends.github.io/mn/data/lake/ice_out_spatial.csv")
+
+iceoff_map <- iceoff_spatial %>%
+  #all of these func are in {dplyr}
+  group_by(DOW, lat, long, pw_basin_n) %>%
+  add_count() %>%
+  summarise(mean_iceoff = mean(jd_out),
+            Observations = n,
+            iceoff_date = as.Date(mean_iceoff, 
+                                origin = as.Date("1960-01-01"))) %>%
+  distinct(DOW, .keep_all = T) %>%
+  mutate(
+    text_label = str_c(pw_basin_n,
+                       "<br/>Lake ID: ", DOW,
+                       "<br/>Mean Ice-Off Date: ",
+                       format(iceoff_date, "%d-%B"),
+                       "<br/>Number of Observations: ",
+                       Observations))
+pal <- colorNumeric(
+  palette = "RdBu",
+  domain = iceoff_map$mean_iceoff)
+
+# idw
+
+
+iceoff_map_idw <- iceoff_map %>% ungroup() %>% dplyr::select(lat,long,mean_iceoff)
+
+sp_iceoff <- SpatialPointsDataFrame(cbind(iceoff_map_idw$long, iceoff_map_idw$lat), data = iceoff_map_idw, proj4string = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")) 
+
+sp_iceoff <- spTransform(sp_iceoff, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+
+iceoff_idw <- idw(formula = mean_iceoff ~ 1, locations = sp_iceoff, newdata = samp, idp = 2)
+
+raster_idw <- raster(nrow = length(unique(samp@coords[,1])), ncol = length(unique(samp@coords[,2])))
+
+extent(raster_idw) <- extent(sp_iceoff)
+
+raster_idw <- rasterize(iceoff_idw, raster_idw, iceoff_idw$var1.pred)
+
+iceoff_idw_leaflet <- leaflet(data = sp_iceoff) %>%
+  addProviderTiles('CartoDB.Positron') %>% 
+  addRasterImage(raster_idw, colors = pal(sp_iceoff$mean_iceoff), opacity = 0.5) %>% 
+  addCircleMarkers(
+    data = iceoff_map,
+    color   = ~pal(mean_iceoff),
+    label   = ~map(text_label, HTML), #map over labels, make html
+    opacity = 0.6, #alpha
+    weight  = ~3, #outline strength
+    radius  = 4 #size of circle
+  ) %>%
+  addLegend(
+    title    = "Average Ice-On (Julian Days)",
+    position = "bottomright",
+    pal = pal,
+    values = ~ mean_iceoff, 
+    opacity = .9)
+
+```
+
+
+### <b><font face="Georgia" size="6em" color="#000000">Ice Duration</font></b>
+
+
+
+```{r duration_idw, fig.width=10, fig.height=8, echo=FALSE}
+duration_idw_leaflet
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Interpolation of Ice Duration Comments</font></b>
+This interactive map is meant to help see the predicted duration of ice for lakes that haven't had data collected for them. These calculations were done using the Inverse Distance Weighting (IDW) method, and done for the entirety of Minnesota. Does your estimate seem accurate? This IDW result seems much more variable than what was expected, with uneven gradients between points. For this reason, I would be wary of placing all of your bets from this map!
+
+
+
+### <b><font face="Georgia" size="6em" color="#000000">Ice-On </font></b>
+
+```{r icein_idw, fig.width=10, fig.height=8, echo=FALSE}
+icein_idw_leaflet
+```
+
+### <b><font face="Georgia" size="4em" color="#000000">Interpolation of Ice-On Comments</font></b>
+This interactive map is much like the ice duration interpolation map. It is still more variable than expected, and might not be the best model.
+
+### <b><font face="Georgia" size="6em" color="#000000">Ice-Off</font></b>
+
+
+```{r iceoff_idw, fig.width=10, fig.height=8, echo=FALSE}
+iceoff_idw_leaflet
+```
