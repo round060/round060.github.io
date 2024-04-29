@@ -8,6 +8,8 @@ navbar:
   right:
     - text: "Recent Work"
       menu:
+        - text: "Publications"
+          href: Publications.html
         - text: "Minnesota Lake Ice"
           href: ./mn/lake_ice_flexdashboard.html
         - text: "Spatial Dashboard"
