@@ -9,17 +9,16 @@ title: "Publications"
 [Click here](https://scholar.google.com/citations?user=VYoNp4MAAAAJ&hl=en&oi=ao) for my Google Scholar profile
 
 **Rounds C**, Arnold TW, Chun CL, Dumke J, Totsch A, Keppers A, Edbald K, Larson ER, Nelson JKR & Hansen GJA. Aquatic invasive species exhibit contrasting seasonal detectability patterns based on eDNA: implications for monitoring.  
-
-Target journal: Freshwater Biology   
 Status: In Review
 
 
 García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux K, **Rounds C**, Totsch A & Larson ER. Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species.  
-
 Target journal: Environmental DNA  
 Status: Accepted
 
-**Rounds C**, Vitense K, & Hansen GJA. 2023. [Digitizing lake bathymetric data using ImageJ](https://doi.org/10.1002/lom3.10569). *Limnology and Oceanography: Methods, 21(10), 615–624*.
+**Rounds C**, Vitense K, & Hansen GJA. 2023. [Digitizing lake bathymetric data using ImageJ](https://doi.org/10.1002/lom3.10569). *Limnology and Oceanography: Methods, 21(10), 615–624*.  
+For a video tutorial of this method, [click here](https://www.youtube.com/watch?v=agiDPmsYVDk)!!!  
+  
 
 Hansen, GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, **Rounds C**, Van Pelt, AO, Eslinger LD, Logsdon DE, & Isermann DA. 2022. [It’s Complicated and It Depends: A Review of the Effects of Ecosystem Changes on Walleye and Yellow Perch Populations in North America](https://doi.org/10.1002/nafm.10741). *North American Journal of Fisheries Management, 42(3), 484–506*. 
 
