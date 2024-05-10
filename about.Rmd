@@ -27,7 +27,7 @@ Here is a beautiful sunfish that we captured. Look at those breeding colors!
 </font>
 </div>
 
-#<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 <div style= "float : left; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">

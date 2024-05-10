@@ -1,0 +1,14 @@
+---
+title: "RecentPublications"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+ [!NOTE]
+[Click here](https://scholar.google.com/citations?user=VYoNp4MAAAAJ&hl=en&oi=ao) for my Google Scholar profile
+
+**Rounds C**, Arnold TW, Chun CL, Dumke J, Totsch A, Keppers A, Edbald K, Larson ER, Nelson JKR & Hansen GJA. Aquatic invasive species exhibit contrasting seasonal detectability patterns based on eDNA: implications for monitoring.  
+Status: In Review
