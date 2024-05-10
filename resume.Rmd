@@ -64,7 +64,7 @@ PhD in Fisheries and Aquatic Biology
 
 St. Paul, MN
 
-2023 - Current
+Current - 2023
 
 ### University of Minnesota Twin - Cities
 
@@ -72,7 +72,7 @@ M.S. in Conservation Sciences
 
 St. Paul, MN
 
-2021 - 2023
+2023 - 2021
 
 ### University of Minnesota Twin - Cities
 
@@ -80,7 +80,7 @@ B.S. Aquatic Sciences
 
 Minneapolis, MN
 
-2017 - 2020
+2020 - 2017
 
 Minored in Computer Science, GIS and Marine Biology
 
@@ -94,7 +94,7 @@ MAISRC, University of Minnesota
 
 St. Paul, MN
 
-2021 - Present
+Present - 2021
 
 - Organized and analyzed fisheries independent data collected from state and federal agencies constituting thousands of surveys over nine decades from multiple states to determine hot spots and bright spots of fish populations.
 - Developed and carried out sampling protocols for AIS eDNA in 21 Minnesota lakes In collaboration with two other universities.
@@ -106,7 +106,7 @@ University of Minnesota
 
 St. Paul, MN
 
-2019 - 2020
+2020 - 2019
 
 - Independently developed a method to increase the efficiency of converting lake bathymetry maps to area-at-depth data using ImageJ. Extracted area-at-depth data from over 1000 Minnesota, Wisconsin, and South Dakota lakes.
 - Created R scripts for comparing seagrass abundance captured from GoPro photos to abundance extrapolated using side-scanning sonar.
@@ -119,7 +119,7 @@ University of Minnesota, Native mussel project
 
 St. Paul, MN
 
-2018 - 2020
+2020 - 2018
 
 - Seined, snorkeled, and electrofished in stream and lake habitats to capture a variety of Minnesota fish and mussels to use in mussel-fish host suitability trials.
 - Assisted in building, programming, and testing a submersible robot capable of videoing mussel-fish interactions in a riverine environment.
@@ -149,7 +149,7 @@ Parkway Pizza
 
 Minneapolis, MN
 
-2015 - 2023
+2023 - 2015
 
 ::: concise
 - Served tables and parties, using interpersonal skills to ensure customer satisfaction
@@ -164,7 +164,7 @@ Publications {data-icon=file}
 
 ### Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species
 
-[Environmental DNA - Accepted]
+[Environmental DNA](https://doi.org/10.1002/edn3.557)
 
 N/A
 
@@ -312,10 +312,11 @@ First AID and CPR Certification
 
 Reviewer: [Minnesota Undergraduate Research and Academic Journal](https://pubs.lib.umn.edu/index.php/muraj/about), Neobiota  
 Field Guides Mentorship Program					        
-Step-Up Program Mentor						     
-[UMN Conservation Sciences Seminar Board](https://sites.google.com/umn.edu/conservationsciencesseminar/home)
-Student Planning Commitee - Joint Aquatic Sciences Meeting
-Sanneh Foundation volunteer						    
+Step-Up Program Mentor  
+National Adaptation Forum Moderator and Volunteer  
+[UMN Conservation Sciences Seminar Board](https://sites.google.com/umn.edu/conservationsciencesseminar/home)  
+Student Planning Commitee - Joint Aquatic Sciences Meeting  
+Sanneh Foundation volunteer  
 Ecology and R tutor							          
 Fisheries and Wildlife Club Vice President, UMNTC		        
 Club soccer communications officer, UMNTC			         
