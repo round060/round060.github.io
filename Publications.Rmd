@@ -12,15 +12,15 @@ title: "Publications"
 Status: In Review
 
 
-García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux K, **Rounds C**, Totsch A & Larson ER. Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species.  
-Target journal: Environmental DNA  
-Status: Accepted
 
-**Rounds C**, Vitense K, & Hansen GJA. 2023. [Digitizing lake bathymetric data using ImageJ](https://doi.org/10.1002/lom3.10569). *Limnology and Oceanography: Methods, 21(10), 615–624*.  
+García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux KB, **Rounds C**, Totsch A, & Larson ER. 2024. [Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species.](https://doi.org/10.1002/edn3.557) *Environmental DNA*, 6(3), e557.
+
+
+**Rounds C**, Vitense K, & Hansen GJA. 2023. [Digitizing lake bathymetric data using ImageJ](https://doi.org/10.1002/lom3.10569). *Limnology and Oceanography: Methods*, 21(10), 615–624.  
 For a video tutorial of this method, [click here](https://www.youtube.com/watch?v=agiDPmsYVDk)!!!  
   
 
-Hansen, GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, **Rounds C**, Van Pelt, AO, Eslinger LD, Logsdon DE, & Isermann DA. 2022. [It’s Complicated and It Depends: A Review of the Effects of Ecosystem Changes on Walleye and Yellow Perch Populations in North America](https://doi.org/10.1002/nafm.10741). *North American Journal of Fisheries Management, 42(3), 484–506*. 
+Hansen, GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, **Rounds C**, Van Pelt, AO, Eslinger LD, Logsdon DE, & Isermann DA. 2022. [It’s Complicated and It Depends: A Review of the Effects of Ecosystem Changes on Walleye and Yellow Perch Populations in North America](https://doi.org/10.1002/nafm.10741). *North American Journal of Fisheries Management*, 42(3), 484–506. 
 
 </left>
 </font>
