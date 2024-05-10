@@ -10,7 +10,7 @@ title: "Christopher Rounds"
 <font size = "4"> 
 My name is Christopher Rounds, and I am an aquatic ecologist in the Fisheries and Aquatic Biology program at the University of Minnesota Twin Cities. Currently, I am a PhD student in the [Conservation Sciences Department](https://conssci.umn.edu/) in [Gretchen Hansen’s](https://gretchenhansen.squarespace.com/) lab studying fishery bright spots. Bright spots are a really cool analysis approach aimed at understanding where populations are doing better than expected and what factors are giving rise to this unexpected resilience. 
   
-  For my master’s I studied how we can use Environmental DNA (eDNA) to detect aquatic invasive species. This project was funded through the Minnesota Aquatic Invasive Species Research Center, and you can read more about it on the [MAISRC webpage](https://maisrc.umn.edu/edna-monitoring).
+  For my master’s I studied how we can use environmental DNA (eDNA) to detect aquatic invasive species. This project was funded through the Minnesota Aquatic Invasive Species Research Center, and you can read more about it on the [MAISRC webpage](https://maisrc.umn.edu/edna-monitoring).
 </font>  
   
   
