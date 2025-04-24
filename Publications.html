@@ -13,7 +13,7 @@
 
 <title>Publications</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -32,8 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -143,11 +143,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -176,8 +180,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -185,16 +189,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -323,14 +320,45 @@ $(document).ready(function () {
 
 <p><font size="4"> <left></p>
 <blockquote>
-<p><a href="https://scholar.google.com/citations?user=VYoNp4MAAAAJ&amp;hl=en&amp;oi=ao">Click here</a> for my Google Scholar profile</p>
+<p><a
+href="https://scholar.google.com/citations?user=VYoNp4MAAAAJ&amp;hl=en&amp;oi=ao">Click
+here</a> for my Google Scholar profile</p>
 </blockquote>
-<p><strong>Rounds C</strong>, Arnold TW, Chun CL, Dumke J, Totsch A, Keppers A, Edbald K, Larson ER, Nelson JKR &amp; Hansen GJA. Aquatic invasive species exhibit contrasting seasonal detectability patterns based on eDNA: implications for monitoring.<br />
-Status: In Review</p>
-<p>García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux KB, <strong>Rounds C</strong>, Totsch A, &amp; Larson ER. 2024. <a href="https://nbviewer.org/github/round060/round060.github.io/blob/main/paper_pdfs/eDNA_Garc%C3%ADa.pdf">Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species.</a> <em>Environmental DNA</em>, 6(3), e557.</p>
-<p><strong>Rounds C</strong>, Vitense K, &amp; Hansen GJA. 2023. <a href="https://nbviewer.org/github/round060/round060.github.io/blob/main/paper_pdfs/LOMethods_Rounds.pdf">Digitizing lake bathymetric data using ImageJ</a>. <em>Limnology and Oceanography: Methods</em>, 21(10), 615–624.</p>
-<p>For a video tutorial of this method, <a href="https://www.youtube.com/watch?v=agiDPmsYVDk">click here</a>!!!</p>
-<p>Hansen, GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, <strong>Rounds C</strong>, Van Pelt, AO, Eslinger LD, Logsdon DE, &amp; Isermann DA. 2022. <a href="https://nbviewer.org/github/round060/round060.github.io/blob/main/paper_pdfs/NAJFM_Hansen.pdf">It’s Complicated and It Depends: A Review of the Effects of Ecosystem Changes on Walleye and Yellow Perch Populations in North America</a>. <em>North American Journal of Fisheries Management</em>, 42(3), 484–506.</p>
+<p>Walsh JR, <strong>Rounds CI</strong>, Vitense K, Masui HK, Blumenfeld
+KA, Boulay PJ, Thomas SM, Honsey AE, Blinick NS, Rude CL, Bacon JA,
+LaRoque AA, Leão TCC, &amp; Hansen GJA. (2025). <a
+href="https://doi.org/10.1002/lol2.70015">Variable phenology but
+consistent loss of ice cover on 1213 Minnesota lakes</a>. <em>Limnology
+and Oceanography Letters</em>, lol2.70015.</p>
+<p>Embke HS, Feiner ZS, Hansen GJA, Mrnak JT, Price MW, <strong>Rounds
+C</strong>, Sass GG, Shaw SL, &amp; Shultz A. (2025). <a
+href="https://doi.org/10.1080/23308249.2025.2487714">Healing Ogaa
+(Walleye Sander vitreus) Waters: Lessons and Future Directions for
+Inland Fisheries Rehabilitation</a>. <em>Reviews in Fisheries Science
+&amp; Aquaculture</em>,* 1–19.</p>
+<p><strong>Rounds C</strong>, Arnold TW, Chun CL, Dumke J, Totsch A,
+Keppers A, Edbald K, Larson ER, Nelson JKR &amp; Hansen GJA. <a
+href="https://doi.org/10.1111/fwb.14320">Aquatic invasive species
+exhibit contrasting seasonal detectability patterns based on eDNA:
+implications for monitoring</a>. Freshwater Biology, 69(10),
+1479–1493.</p>
+<p>García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux KB,
+<strong>Rounds C</strong>, Totsch A, &amp; Larson ER. 2024. <a
+href="https://doi.org/10.1002/edn3.557">Environmental DNA storage and
+extraction method affects detectability for multiple aquatic invasive
+species.</a> <em>Environmental DNA</em>, 6(3), e557.</p>
+<p><strong>Rounds C</strong>, Vitense K, &amp; Hansen GJA. 2023. <a
+href="https://doi.org/10.1002/lom3.10569">Digitizing lake bathymetric
+data using ImageJ</a>. <em>Limnology and Oceanography: Methods</em>,
+21(10), 615–624.</p>
+<p>For a video tutorial of this method, <a
+href="https://www.youtube.com/watch?v=agiDPmsYVDk">click here</a>!!!</p>
+<p>Hansen, GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S,
+<strong>Rounds C</strong>, Van Pelt, AO, Eslinger LD, Logsdon DE, &amp;
+Isermann DA. 2022. <a href="https://doi.org/10.1002/nafm.10741">It’s
+Complicated and It Depends: A Review of the Effects of Ecosystem Changes
+on Walleye and Yellow Perch Populations in North America</a>. <em>North
+American Journal of Fisheries Management</em>, 42(3), 484–506.</p>
 <p></left> </font></p>
 
 

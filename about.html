@@ -13,7 +13,7 @@
 
 <title>A Fun About</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -32,8 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -143,11 +143,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -176,8 +180,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -185,16 +189,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -323,33 +320,45 @@ $(document).ready(function () {
 
 <font size="4">
 <center>
-Instead of talking about myself I would prefer to show some cool photos of experiences I’ve had (mainly while doing fieldwork) over the last couple of years. I hope you enjoy!
+Instead of talking about myself I would prefer to show some cool photos
+of experiences I’ve had (mainly while doing fieldwork) over the last
+couple of years. I hope you enjoy!
 </center>
 <p></font></p>
-<div style="float : left; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
-<img src="photos/seining.jpg" /> <font size="4">
+<div
+style="float : left; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
+<img src="photos/seining.JPG" /> <font size="4">
 <center>
-This is a photo of a group of high school students, Minnesota Master naturalists, Mark Hove and myself doing some seining in the upper St. Croix river. The fish we collected were used in freshwater mussel host suitability trials. Probably the best experience an undergrad could ask for!
+This is a photo of a group of high school students, Minnesota Master
+naturalists, Mark Hove and myself doing some seining in the upper
+St. Croix river. The fish we collected were used in freshwater mussel
+host suitability trials. Probably the best experience an undergrad could
+ask for!
 </center>
 <p></font></p>
 </div>
-<div style="float : right; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
-<img src="photos/sunny.jpg" /> <font size="4">
+<div
+style="float : right; position : relative; top: 0px; width : 450px; height : 360px; padding-right: 24px; margin-bottom : 0px">
+<img src="photos/sunny.JPG" /> <font size="4">
 <center>
-Here is a beautiful sunfish that we captured. Look at those breeding colors!
+Here is a beautiful sunfish that we captured. Look at those breeding
+colors!
 </center>
 <p></font></p>
 </div>
 <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
-<div style="float : left; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
+<div
+style="float : left; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
 <p><img src="photos/sharks.JPG" /></p>
 </div>
-<div style="float : right; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
+<div
+style="float : right; position : relative; top: 0px; width : 450px; height : 250px; padding-right: 24px; margin-bottom : 0px">
 <p><img src="photos/lotsosharks.JPG" /></p>
 </div>
 <font size="4">
 <center>
-This is me diving near Roatan, an island off the coast of Honduras. This is the first time I dove with sharks and I recommend it to everyone.
+This is me diving near Roatan, an island off the coast of Honduras. This
+is the first time I dove with sharks and I recommend it to everyone.
 </center>
 <p></font></p>
 
