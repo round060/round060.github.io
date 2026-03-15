@@ -1,10 +1,7 @@
-name: "Yay internet!"
-header-includes: 
-  \usepackage{graphicx}
-  \usepackage{float}
+name: "Christopher Rounds"
 output_dir: "."
 navbar:
-  title: "Home"
+  title: "Christopher Rounds"
   right:
     - text: "Recent Work"
       menu:
@@ -12,22 +9,12 @@ navbar:
           href: Publications.html
         - text: "Minnesota Lake Ice"
           href: ./mn/lake_ice_flexdashboard.html
-        - text: "Spatial Dashboard"
-          href: MN_spatial_dashboard.html
-    - text: "Professional Documents"
-      menu:
-        - text: "CV/Resume"
-          href: resume.html
+    - text: "CV / Resume"
+      href: resume.html
     - text: "About"
       href: about.html
-    - icon: fa-envelope fa-lg
-      href: mailto:<round060@umn.edu>
-    - icon: fa-github fa-lg
-      href: http://github.com/round060/
-    - icon: fa-brands fa-linkedin
-      href: https://www.linkedin.com/in/christopher-rounds-6a9b19189/
-    - icon: fa-brands fa-twitter
-      href: https://twitter.com/CR46_
-output:  
-   html_document:
+    - text: "Contact"
+      href: contact.html
+output:
+  html_document:
     theme: flatly

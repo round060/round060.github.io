@@ -11,9 +11,9 @@
 
 
 
-<title>Christopher Rounds</title>
+<title>index.knit</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -32,8 +32,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -60,6 +58,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="custom.css" type="text/css" />
 
 
 
@@ -240,7 +239,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Home</a>
+      <a class="navbar-brand" href="index.html">Christopher Rounds</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -260,49 +259,16 @@ $(document).ready(function () {
     <li>
       <a href="./mn/lake_ice_flexdashboard.html">Minnesota Lake Ice</a>
     </li>
-    <li>
-      <a href="MN_spatial_dashboard.html">Spatial Dashboard</a>
-    </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Professional Documents
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="resume.html">CV/Resume</a>
-    </li>
-  </ul>
+<li>
+  <a href="resume.html">CV / Resume</a>
 </li>
 <li>
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="mailto:&lt;round060@umn.edu&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="http://github.com/round060/">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="https://www.linkedin.com/in/christopher-rounds-6a9b19189/">
-    <span class="fa fa-brands fa-linkedin"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="https://twitter.com/CR46_">
-    <span class="fa fa-brands fa-twitter"></span>
-     
-  </a>
+  <a href="contact.html">Contact</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -313,33 +279,284 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Christopher Rounds</h1>
 
 </div>
 
 
-<div
-style="float : left; position : relative; top: 0px; width : 450px; height : 525px; padding-right: 24px; margin-bottom : 0px">
-<p><img src="photos/Headshot.JPG" /></p>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: #2c3e50;
+  background: #fafaf8;
+}
+
+h1, h2, h3 { font-family: 'Lora', serif; }
+
+/* ── Carousel ── */
+.carousel-wrap {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  height: 480px;
+  overflow: hidden;
+  background: #1a2e22;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.carousel-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.0) 40%,
+    rgba(0,0,0,0.35) 100%
+  );
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease;
+}
+
+.carousel-btn:hover { background: rgba(255,255,255,0.32); }
+.carousel-btn.prev { left: 18px; }
+.carousel-btn.next { right: 18px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 18px;
+  right: 24px;
+  display: flex;
+  gap: 7px;
+  z-index: 3;
+}
+
+.carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-dot.active {
+  background: #fff;
+  transform: scale(1.25);
+}
+
+/* ── Bio section ── */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  padding: 48px 0 40px 0;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.hero-photo { flex-shrink: 0; width: 220px; }
+
+.hero-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  image-rendering: auto;
+}
+
+.hero-text h1 {
+  font-size: 2.4em;
+  margin: 0 0 4px 0;
+  color: #1a2e22;
+  letter-spacing: -0.5px;
+}
+
+.hero-text .title-line {
+  font-size: 1em;
+  color: #4a7c59;
+  font-weight: 500;
+  margin-bottom: 20px;
+  letter-spacing: 0.03em;
+}
+
+.hero-text p {
+  font-size: 1.05em;
+  line-height: 1.75;
+  color: #3a4a40;
+  margin-bottom: 14px;
+}
+
+.hero-text a {
+  color: #2e7d5e;
+  text-decoration: underline;
+  text-decoration-color: rgba(46,125,94,0.35);
+  text-underline-offset: 3px;
+}
+
+.hero-text a:hover { text-decoration-color: #2e7d5e; }
+
+.divider {
+  border: none;
+  border-top: 1px solid #dde5db;
+  max-width: 860px;
+  margin: 0 auto 32px auto;
+}
+
+.interests {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.interests p {
+  font-size: 1.05em;
+  line-height: 1.75;
+  color: #3a4a40;
+}
+
+@media (max-width: 650px) {
+  .carousel-wrap { height: 300px; }
+  .hero { flex-direction: column; gap: 28px; }
+  .hero-photo { width: 100%; }
+  .hero-photo img { width: 100%; height: 260px; }
+}
+</style>
+
+<!-- CAROUSEL -->
+<div class="carousel-wrap" id="mainCarousel">
+  <div class="carousel-track" id="carouselTrack">
+
+    <div class="carousel-slide">
+      <img src="photos/stcroix.jpg" alt="St. Croix River">
+    </div>
+
+    <div class="carousel-slide">
+      <img src="photos/divingzebs.JPG" alt="Underwater fieldwork">
+    </div>
+
+    <div class="carousel-slide">
+      <img src="photos/eaglelake.JPG" alt="Eagle Lake">
+    </div>
+
+    <div class="carousel-slide">
+      <img src="photos/IMG_1084.JPG" alt="">
+    </div>
+
+    <div class="carousel-slide">
+      <img src="photos/hawaii.jpg" alt="Hawaii sunset">
+    </div>
+
+  </div>
+
+  <button class="carousel-btn prev" onclick="carouselMove(-1)" aria-label="Previous">&#8592;</button>
+  <button class="carousel-btn next" onclick="carouselMove(1)" aria-label="Next">&#8594;</button>
+
+  <div class="carousel-dots" id="carouselDots"></div>
 </div>
-<p><font size = "4"> My name is Christopher Rounds, and I am an aquatic
-ecologist in the Fisheries and Aquatic Biology program at the University
-of Minnesota Twin Cities. Currently, I am a PhD student in the <a
-href="https://conssci.umn.edu/">Conservation Sciences Department</a> in
-<a href="https://gretchenhansen.squarespace.com/">Gretchen Hansen’s</a>
-lab studying fishery bright spots. Bright spots are a really cool
-analysis approach aimed at understanding where populations are doing
-better than expected and what factors are giving rise to this unexpected
-resilience.</p>
-<p>For my master’s I studied how we can use environmental DNA (eDNA) to
-detect aquatic invasive species. This project was funded through the
-Minnesota Aquatic Invasive Species Research Center, and you can read
-more about it on the <a
-href="https://maisrc.umn.edu/edna-monitoring">MAISRC webpage</a>.
-</font></p>
-<p><font size = "4"> When I am not busy with research or classes, I
-enjoy playing video games, cooking, destroying my knees playing soccer
-and exploring the great outdoors! </font></p>
+
+<script>
+(function () {
+  var current = 0;
+  var total = 5;
+  var track = document.getElementById('carouselTrack');
+  var dotsWrap = document.getElementById('carouselDots');
+
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('data-i', i);
+    d.onclick = (function(idx) {
+      return function() { goTo(idx); };
+    })(i);
+    dotsWrap.appendChild(d);
+  }
+
+  function goTo(n) {
+    current = (n + total) % total;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    var dots = dotsWrap.querySelectorAll('.carousel-dot');
+    dots.forEach(function (d, idx) {
+      d.className = 'carousel-dot' + (idx === current ? ' active' : '');
+    });
+  }
+
+  window.carouselMove = function (dir) { goTo(current + dir); };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+})();
+</script>
+
+<!-- BIO -->
+<div class="hero">
+  <div class="hero-photo">
+    <img src="photos/Headshot.JPG" alt="Christopher Rounds headshot">
+  </div>
+  <div class="hero-text">
+    <h1>Christopher Rounds</h1>
+    <div class="title-line">PhD Student &middot; Fisheries &amp; Aquatic Biology &middot; University of Minnesota</div>
+    <p>
+      I am an aquatic ecologist in the <a href="https://conssci.umn.edu/">Conservation Sciences Department</a> at the University of Minnesota Twin Cities, working in <a href="https://gretchenhansen.squarespace.com/">Gretchen Hansen's lab</a>. My PhD research focuses on <strong>fishery bright spots</strong>. This involves understanding where fish populations outperform expectations and what factors drive that unexpected resilience.
+    </p>
+    Adittionally, I am a student worker at the Minnesota Department of Natural Resources working on climate change policy and planning. This role is really diverse but ends up working a lot on Fisheries and Wildlife division climate projects and public scoping and engagement. 
+    <p>
+    <p>
+      For my master's, I studied how <strong>environmental DNA (eDNA)</strong> can be used to detect aquatic invasive species, funded through the <a href="https://maisrc.umn.edu/edna-monitoring">Minnesota Aquatic Invasive Species Research Center</a>.
+    </p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="interests">
+  <p>
+    Outside the lab, you'll find me cooking ambitious meals, ruining my knees on the soccer pitch, or exploring the outdoors. Video games also get a fair share of my evenings.
+  </p>
+</div>
 
 
 

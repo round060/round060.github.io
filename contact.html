@@ -11,7 +11,7 @@
 
 
 
-<title>about.knit</title>
+<title>contact.knit</title>
 
 <script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -286,141 +286,147 @@ $(document).ready(function () {
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #2c3e50; }
-h1, h2 { font-family: 'Lora', serif; }
+h1 { font-family: 'Lora', serif; }
 
-.page-header {
-  max-width: 860px;
-  margin: 48px auto 12px auto;
-  padding: 0;
+.contact-wrap {
+  max-width: 680px;
+  margin: 64px auto 80px auto;
+  padding: 0 16px;
 }
 
-.page-header h1 {
+.contact-wrap h1 {
   font-size: 2em;
   color: #1a2e22;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.page-header .subtitle {
+.contact-intro {
   font-size: 1.05em;
-  color: #5a7a65;
-  line-height: 1.6;
-  max-width: 640px;
-}
-
-.photo-grid {
-  max-width: 860px;
-  margin: 40px auto;
-  display: grid;
-  gap: 24px;
-}
-
-.photo-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.photo-row.single {
-  grid-template-columns: 1fr;
-}
-
-.photo-card {
-  position: relative;
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.10);
-}
-
-.photo-card img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
-.photo-card:hover img {
-  transform: scale(1.02);
-}
-
-.photo-caption {
-  padding: 14px 16px 16px;
-  background: #fff;
-  font-size: 0.92em;
   color: #4a5e52;
-  line-height: 1.55;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  max-width: 520px;
 }
 
-.section-label {
-  max-width: 860px;
-  margin: 40px auto 0 auto;
-  font-size: 0.78em;
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+  background: #fff;
+  border: 1px solid #dde5db;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.contact-card:hover {
+  border-color: #4a7c59;
+  box-shadow: 0 4px 20px rgba(74,124,89,0.12);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.3em;
+}
+
+.icon-email  { background: #e8f4ee; color: #2e7d5e; }
+.icon-github { background: #eef0f4; color: #24292f; }
+.icon-linkedin { background: #e8f0f8; color: #0a66c2; }
+.icon-twitter { background: #e8f4fc; color: #1da1f2; }
+
+.contact-label {
+  font-size: 0.75em;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #4a7c59;
-  border-bottom: 1px solid #dde5db;
-  padding-bottom: 8px;
+  color: #7a9a85;
+  margin-bottom: 3px;
 }
 
-@media (max-width: 600px) {
-  .photo-row { grid-template-columns: 1fr; }
+.contact-value {
+  font-size: 1.05em;
+  font-weight: 500;
+  color: #1a2e22;
+}
+
+.contact-arrow {
+  margin-left: auto;
+  color: #aac4b2;
+  font-size: 1.1em;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.contact-card:hover .contact-arrow {
+  transform: translateX(4px);
+  color: #4a7c59;
 }
 </style>
-<div class="page-header">
-  <h1>About</h1>
-  <div class="subtitle">
-    Instead of talking about myself I'd rather show some photos from fieldwork over the last few years. I hope you enjoy!
-  </div>
-</div>
+<div class="contact-wrap">
+  <h1>Get in Touch</h1>
+  <p class="contact-intro">
+    I'm always happy to chat about fisheries,  data sharing, media requests or potential collaborations. Reach out through any of the channels below.
+  </p>
 
-<div class="section-label">Fieldwork &middot; St. Croix River</div>
+  <a class="contact-card" href="mailto:round060@umn.edu">
+    <div class="contact-icon icon-email">&#9993;</div>
+    <div>
+      <div class="contact-label">Email</div>
+      <div class="contact-value">round060@umn.edu</div>
+    </div>
+    <span class="contact-arrow">&#8594;</span>
+  </a>
 
-<div class="photo-grid">
-  <div class="photo-row">
-    <div class="photo-card">
-      <img src="photos/seining.JPG" alt="Seining in the St. Croix River">
-      <div class="photo-caption">
-        Seining in the upper St. Croix River with high school students, Minnesota Master Naturalists, and Mark Hove. The fish we collected were used in freshwater mussel host suitability trials &#8212; probably the best experience an undergrad could ask for.
-      </div>
+  <a class="contact-card" href="https://github.com/round060/" target="_blank">
+    <div class="contact-icon icon-github">
+      <svg height="22" viewBox="0 0 16 16" width="22" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
     </div>
-    <div class="photo-card">
-      <img src="photos/sunny.JPG" alt="Sunfish in breeding colors">
-      <div class="photo-caption">
-        A stunning sunfish captured during sampling. Look at those breeding colors!
-      </div>
+    <div>
+      <div class="contact-label">GitHub</div>
+      <div class="contact-value">github.com/round060</div>
     </div>
-  </div>
-</div>
+    <span class="contact-arrow">&#8594;</span>
+  </a>
 
-<div class="section-label">Adventure &middot; Roatan, Honduras</div>
+  <a class="contact-card" href="https://www.linkedin.com/in/christopher-rounds-6a9b19189/" target="_blank">
+    <div class="contact-icon icon-linkedin">
+      <svg height="22" viewBox="0 0 24 24" width="22" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="contact-label">LinkedIn</div>
+      <div class="contact-value">Christopher Rounds</div>
+    </div>
+    <span class="contact-arrow">&#8594;</span>
+  </a>
 
-<div class="photo-grid">
-  <div class="photo-row">
-    <div class="photo-card">
-      <img src="photos/sharks.JPG" alt="Diving with sharks">
-      <div class="photo-caption">Diving near Roatan, an island off the coast of Honduras.</div>
+  <a class="contact-card" href="https://twitter.com/CR46_" target="_blank">
+    <div class="contact-icon icon-twitter">
+      <svg height="22" viewBox="0 0 24 24" width="22" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+      </svg>
     </div>
-    <div class="photo-card">
-      <img src="photos/lotsosharks.JPG" alt="Many sharks underwater">
-      <div class="photo-caption">My first time diving with sharks &#8212; and I recommend it to everyone.</div>
+    <div>
+      <div class="contact-label">Twitter / X</div>
+      <div class="contact-value">@CR46_</div>
     </div>
-  </div>
-</div>
+    <span class="contact-arrow">&#8594;</span>
+  </a>
 
-<div class="section-label">Fieldwork &middot; Northern Wisconsin</div>
-
-<div class="photo-grid">
-  <div class="photo-row">
-    <div class="photo-card">
-      <img src="photos/bass.JPG" alt="Bass in Northern Wisconsin">
-      <div class="photo-caption">Curious bass during fieldwork in Northern Wisconsin.</div>
-    </div>
-    <div class="photo-card">
-      <img src="photos/efishing.JPG" alt="Electrofishing in Northern Wisconsin">
-      <div class="photo-caption">Electrofishing surveys &#8212; a staple of fisheries fieldwork.</div>
-    </div>
-  </div>
 </div>
 
 

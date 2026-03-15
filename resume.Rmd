@@ -1,46 +1,48 @@
 ---
-title: "Christopher Rounds' resume"
+title: "Christopher Rounds - CV"
 author: Christopher Rounds
 date: "`r Sys.Date()`"
 output:
   pagedown::html_resume:
-    # set it to true for a self-contained HTML page but it'll take longer to render
     self_contained: false
-# uncomment this line to produce HTML and PDF in RStudio:
+# uncomment to also produce PDF:
 #knit: pagedown::chrome_print
 ---
 
 Aside
 ================================================================================
 
+![](./photos/Headshot.JPG){width=80%}
 
-![](./photos/sample.JPG){width=80%}
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+- <i class="fa fa-envelope"></i> round060@umn.edu
 
 
 Skills {#skills}
 --------------------------------------------------------------------------------
 
-- Experienced in aquatic ecology fieldwork and statistical analysis.
+- **Statistics:** GLMM, GAMM, occupancy modeling, Bayesian statistics, hurdle models, Random Forest, SVM, boosted regression
 
-- Skilled in R, Python and GIS software
+- **Languages:** R (proficient), Python, SQL
+
+- **Tools:** ArcGIS, GitHub, QGIS
 
 
-Contact Info {#contact}
+Certifications {#skills}
 --------------------------------------------------------------------------------
 
-- <i class="fa fa-envelope"></i> round060@umn.edu
-- <i class="fa fa-github"></i> [GitHub profile](https://github.com/round060)
-- For more information, please contact me via email.
-
+- SSI Advanced Scuba, Wreck, Deep Water, NITROX & Eco Diver
+- MN Boater Education Certification
+- First Aid & CPR
 
 
 Disclaimer {#disclaimer}
 --------------------------------------------------------------------------------
 
-This resume was made with the R package [**pagedown**](https://github.com/rstudio/pagedown).
-
-Last updated on `r Sys.Date()`.
-
+Last updated `r Sys.Date()`.
 
 
 Main
@@ -48,119 +50,163 @@ Main
 
 Christopher Rounds {#title}
 --------------------------------------------------------------------------------
-  
-  
-### Background
 
-I am an graduate student at the University of Minnesota Twin Cities. For my PhD I am studying fishery bright spots. During my master’s I focused on how we can use Environmental DNA (eDNA) to detect Aquatic Invasive Species (AIS). Broadly my research interests involve how anthropogenic factors impact aquatic ecosystems and how we can mitigate these impacts. I use a variety of quantitative approaches to understand how we can protect our amazing aquatic resources from future climate change and invasive species changes.
+### Aquatic Ecologist | PhD Candidate, University of Minnesota
+
+I study **fishery bright spots**, populations that outperform expectations, and what environmental and management factors drive unexpected resilience. My master's work developed eDNA protocols for detecting multiple aquatic invasive species simultaneously. I use quantitative approaches including mixed models, occupancy modeling, and machine learning to understand how climate change and invasive species reshape aquatic ecosystems.
 
 
 Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
-### University of Minnesota Twin - Cities
+### University of Minnesota Twin Cities
 
-PhD in Fisheries and Aquatic Biology
+Ph.D. Conservation Sciences — Fisheries & Aquatic Sciences
 
 St. Paul, MN
 
-Current - 2023
+Present - 2023
 
-### University of Minnesota Twin - Cities
+*Thesis: Spot the difference: Implications of fishery bright spots for climate change adaptation*
 
-M.S. in Conservation Sciences
+### University of Minnesota Twin Cities
+
+M.S. Conservation Sciences — Fisheries & Aquatic Sciences
 
 St. Paul, MN
 
 2023 - 2021
 
-### University of Minnesota Twin - Cities
+*Thesis: Optimizing eDNA for Detecting Multiple Aquatic Invasive Species*
 
-B.S. Aquatic Sciences
+### University of Minnesota Twin Cities
+
+B.S. Fisheries, Wildlife & Conservation Biology
 
 Minneapolis, MN
 
-2020 - 2017
+2020 - 2016
 
-Minored in Computer Science, GIS and Marine Biology
+*Minors: Computer Science, GIS, Marine Biology*
 
 
-Research Experience {data-icon=laptop}
+Research & Professional Experience {data-icon=laptop}
 --------------------------------------------------------------------------------
 
-### Graduate Research Assistant
+### Climate Change Policy & Planning Student Worker
 
-MAISRC, University of Minnesota
-
-St. Paul, MN
-
-Present - 2021
-
-- Organized and analyzed fisheries independent data collected from state and federal agencies constituting thousands of surveys over nine decades from multiple states to determine hot spots and bright spots of fish populations.
-- Developed and carried out sampling protocols for AIS eDNA in 21 Minnesota lakes In collaboration with two other universities.
-- Performed literature reviews on topics such as eDNA, anthropogenic factors impacting walleye and yellow perch populations, and copper impacts on freshwater organisms. 
-
-### Junior Scientist
-
-University of Minnesota
+Minnesota Department of Natural Resources
 
 St. Paul, MN
 
-2020 - 2019
+Present - Jul 2024
 
-- Independently developed a method to increase the efficiency of converting lake bathymetry maps to area-at-depth data using ImageJ. Extracted area-at-depth data from over 1000 Minnesota, Wisconsin, and South Dakota lakes.
-- Created R scripts for comparing seagrass abundance captured from GoPro photos to abundance extrapolated using side-scanning sonar.
-- Collected hundreds of littoral and deep-water fish and invertebrate samples. Processed samples for stable isotope analysis while working in a team setting.
+- Co-organized the fish and wildlife climate change committee and three subcommittees.
+- Wrote and distributed a quarterly newsletter on climate change impacts to fish and wildlife.
+- Co-led the Fish and Wildlife Division Climate Action Conversation seminar (4×/year, ~100 attendees) and the all-DNR Climate Conversation (~500 attendees).
+- Collaborated with managers and biologists to draft major management plans including the Muskellunge Long Range Plan.
 
+### Graduate Research & Teaching Assistant
+
+Fisheries Ecosystem Ecology Lab, University of Minnesota (Gretchen Hansen Lab)
+
+St. Paul, MN
+
+Present - Sep 2021
+
+- Organized fisheries-independent data from state and federal agencies — thousands of surveys over nine decades — to identify walleye bright spots across multiple states.
+- Collated, cleaned, and modeled water chemistry, phytoplankton, and zooplankton data from 30 MN lakes over 40 years using GAMM and hurdle models to examine invasive species and climate effects on lake food webs.
+- Developed and carried out eDNA sampling and lab protocols across 21 Minnesota lakes in collaboration with researchers from multiple institutions; used multispecies occupancy models to inform sampling recommendations.
+- Mentored undergraduate and high school students from diverse backgrounds.
+
+### Undergraduate Technician & Junior Scientist
+
+Fisheries Ecosystem Ecology Lab, University of Minnesota
+
+St. Paul, MN
+
+Aug 2021 - Jun 2019
+
+- Independently developed an ImageJ-based method to extract area-at-depth data from bathymetric maps; applied to 1,000+ lakes in MN, WI, and SD.
+- Created R scripts to compare seagrass abundance from GoPro footage vs. side-scanning sonar estimates.
+- Collected fish and invertebrate samples using kick netting, ponars, electrofishing, and gill netting; processed samples for stable isotope analysis.
 
 ### Undergraduate Research Assistant
 
-University of Minnesota, Native mussel project
+Minnesota Native Mussel Project, University of Minnesota
 
 St. Paul, MN
 
-2020 - 2018
+Aug 2020 - Jun 2018
 
-- Seined, snorkeled, and electrofished in stream and lake habitats to capture a variety of Minnesota fish and mussels to use in mussel-fish host suitability trials.
-- Assisted in building, programming, and testing a submersible robot capable of videoing mussel-fish interactions in a riverine environment.
-- Composed six reports of research results and shared the results with the macological community through presentations and papers.
+- Seined, snorkeled, and electrofished in stream and lake habitats to capture fish and mussels for host suitability trials.
+- Assisted in building, programming, and testing a submersible robot for recording mussel-fish interactions in riverine environments.
 
+### Life Support Technician
 
-
-Professional Experience {data-icon=suitcase}
---------------------------------------------------------------------------------
-
-### Life Support Intern
-
-Como Zoo
+Como Zoo Conservatory
 
 St. Paul, MN
 
-2019
+Sep 2019 - Jan 2019
 
-::: concise
-- Maintained freshwater and saltwater sterilization systems 
-- Performed water quality tests
-:::
-
-### Server
-
-Parkway Pizza 
-
-Minneapolis, MN
-
-2023 - 2015
-
-::: concise
-- Served tables and parties, using interpersonal skills to ensure customer satisfaction
-- Managed up to 5 dayshift staff in placement, cooking and delivering of orders
-:::
+- Maintained ozone generators, filtration and sterilization systems, air compressors, and valve actuators for exhibits housing animals from pinnipeds to fish.
+- Performed water chemistry tests (pH, salinity, ammonia, nitrites, nitrates, DO, phosphates) to ensure safe conditions for sensitive animals.
 
 
-
-
-Publications {data-icon=file}
+Refereed Publications {data-icon=file}
 --------------------------------------------------------------------------------
+
+
+### Phenology, food webs, and fish: The effects of shifted ice phenology across multiple trophic levels
+
+[Ecosphere](https://doi.org/10.1002/ecs2.70472)
+
+N/A
+
+2025
+
+**Rounds CI**, Manske J, Feiner ZS, Walsh JR, Polik C, & Hansen GJA.
+
+### Bright spots for advancing ecological understanding and conservation decision-making
+
+[Conservation Biology](https://doi.org/10.1111/cobi.70109)
+
+N/A
+
+2025
+
+Embke HS, Feiner ZS, Hansen GJA, Isermann D, Jensen OP, **Rounds CI**, Smith QC, & Vander Zanden MJV.
+
+### Variable phenology but consistent loss of ice cover on 1213 Minnesota lakes
+
+[Limnology and Oceanography Letters](https://doi.org/10.1002/lol2.70015)
+
+N/A
+
+2025
+
+Walsh JR, **Rounds CI**, Vitense K, Masui HK, Blumenfeld KA, Boulay PJ, Thomas SM, Honsey AE, Blinick NS, Rude CL, Bacon JA, LaRoque AA, Leão TCC, & Hansen GJA.
+
+### Healing Ogaa (Walleye *Sander vitreus*) Waters: Lessons and Future Directions for Inland Fisheries Rehabilitation
+
+[Reviews in Fisheries Science & Aquaculture](https://doi.org/10.1080/23308249.2025.2487714)
+
+N/A
+
+2025
+
+Embke HS, Feiner ZS, Hansen GJA, Mrnak JT, Price MW, **Rounds C**, Sass GG, Shaw SL, & Shultz A.
+
+### Aquatic invasive species exhibit contrasting seasonal detectability patterns based on eDNA: Implications for monitoring
+
+[Freshwater Biology](https://doi.org/10.1111/fwb.14320)
+
+N/A
+
+2024
+
+**Rounds CI**, Arnold TW, Chun CL, Dumke J, Totsch A, Keppers A, Edblad K, García SM, Larson ER, Nelson JKR, & Hansen GJA.
 
 ### Environmental DNA storage and extraction method affects detectability for multiple aquatic invasive species
 
@@ -170,21 +216,19 @@ N/A
 
 2024
 
-García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux K, **Rounds C**, Totsch A, Larson ER.
-
+García SM, Chun CL, Dumke J, Hansen GJA, Quebedeaux KB, **Rounds C**, Totsch A, & Larson ER.
 
 ### Digitizing lake bathymetric data using ImageJ
 
-[Limnology and Oceanography Methods](https://doi.org/10.1002/lom3.10569)
+[Limnology and Oceanography: Methods](https://doi.org/10.1002/lom3.10569)
 
 N/A
 
 2023
 
-**Rounds C**, Vitense K, Hansen GJA. 
+**Rounds CI**, Vitense K, & Hansen GJA.
 
-
-### It’s complicated and it depends: A review of the effects of ecosystem changes on Walleye and Yellow Perch Populations in North America. 
+### It's Complicated and It Depends: A Review of the Effects of Ecosystem Changes on Walleye and Yellow Perch Populations in North America
 
 [North American Journal of Fisheries Management](https://doi.org/10.1002/nafm.10741)
 
@@ -192,135 +236,363 @@ N/A
 
 2022
 
-Hansen GJA, Ruzich J, Krabbenhoft C, Kundel H, Mahlum S, **Rounds C**, Van Pelt A, Eslinger L, Logsdon D, Isermann D.
+Hansen GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, **Rounds CI**, Van Pelt AO, Eslinger LD, Logsdon DE, & Isermann DA.
 
+Grants & Fellowships {data-icon=trophy}
+--------------------------------------------------------------------------------
 
+### Doctoral Dissertation Fellowship — $26,000
 
-### Digitization of Minnesota and Wisconsin bathymetric maps resulting in hypsographic data. 
-
-[Data Repository for the University of Minnesota](http://hdl.handle.net/11299/216182)
+University of Minnesota Twin Cities
 
 N/A
 
-2020
+2026
 
-**Rounds C**, Hansen G, Vitense K.
+*Spot the difference: Implications of fishery bright spots and dark spots for climate change adaptation.*
+
+### Identifying Climate-Resilient Fisheries to Guide Minnesota Lake Management — $1,023,720
+
+Environment and Natural Resources Trust Fund
+
+N/A
+
+2026 - 2026
+
+Hansen GJA, Mosley CM, **Rounds CI**, Embke HE. (7/2026 – 7/2029)
+
+### Moos Aquatic Biology Fellowship — $9,000
+
+Freshwater Sciences, University of Minnesota
+
+N/A
+
+2022
+
+*Optimizing eDNA for Multiple AIS.*
+
+### Undergraduate Research Opportunities Program — $1,800
+
+University of Minnesota Twin Cities
+
+N/A
+
+2019
+
+**Rounds CI**, Hove M. *Robot-assisted conservation research on two federally endangered mussels.*
 
 
-Selected Presentations {data-icon=edit}
+Selected Presentations {data-icon=chalkboard-teacher}
 --------------------------------------------------------------------------------
 
-### Walleye bright spots in the upper Midwestern USA.
+### Human impacts on Minnesota's aquatic ecosystems: challenges and a cause for hope *(Invited)*
 
-Annual Minnesota Chapter Meeting of the American Fisheries Society
+Metro State University, St. Paul MN
 
-Brainerd, MN
+N/A
+
+2025
+
+**Rounds C**, Hansen GJA.
+
+### Seeing bright spots: Factors related to unexpected walleye success *(Invited)*
+
+Midwest Fish and Wildlife, St. Louis MO
+
+N/A
+
+2025
+
+**Rounds C**, Embke HS, Feiner ZS, Isermann D, Smith Q, Jensen O, Vander Zanden MJ, Hansen GJA.
+
+
+### Effects of anomalous ice-off on plankton and walleye in Minnesota lakes
+
+Annual Meeting of the American Fisheries Society, Honolulu HI
+
+N/A
 
 2024
 
-**Rounds C**, Embke HS, Feiner Z, Henningsen R, Isermann D, Smith Q, Jensen O, Vander Zanden MJ, Vasquez B, Hansen GJA
+**\*Rounds C**, Feiner Z, Manske J, Walsh J, Polik C, Hansen GJA.
 
-### Patterns and trends in Minnesota lake ice
+### Walleye bright spots in the upper Midwestern USA
 
-Center for Limnology Seminar Series
+Annual Meeting — MN Chapter of the American Fisheries Society, Brainerd MN
 
-Madison, WI
+N/A
 
-2023
+2024
 
-**Rounds C**, Walsh J, Vitense K, Hansen GJA
+**\*Rounds C**, Embke HS, Feiner Z, Henningsen R, Isermann D, Smith Q, Jensen O, Vander Zanden MJ, Vasquez B, Hansen GJA.
 
-### Getting the most bang for our buck; optimizing sampling for multiple AIS using eDNA.
+### Patterns and trends in Minnesota lake ice *(Invited)*
 
-Society for Freshwater Science
+UW Madison Center for Limnology Seminar, Madison WI
 
-Brisbane, AUS
-
-2023
-
-**Rounds C**, Arnold T, Nelson J, Dumke J, Chun CL, Larson E, Totsch A, Garcia S, Edbald K, Hansen GJA
-
-
-### Model Comparison for Evaluating Loss of Lake Ice
-
-International Association of Great Lakes Research
-
-Toronto, CA
+N/A
 
 2023
 
-**Rounds C**
+**Rounds C**, Walsh J, Vitense K, Hansen GJA.
 
-### Digitizing Lake depth data using ImageJ
+### Getting the most bang for our buck; optimizing sampling for multiple AIS using eDNA
 
-Joint Aquatic Sciences Meeting
+Society for Freshwater Science, Brisbane AUS
 
-Grand Rapids, Mi
+N/A
 
-2022
+2023
 
-**Rounds C**, Vitense K, Hansen GJA.
+**\*Rounds C**, Arnold T, Nelson J, Dumke J, Chun CL, Larson E, Totsch A, Garcia S, Edbald K, Hansen GJA.
 
-### Optimizing eDNA for Multiple AIS detections.
+### Who, what, when, where, and how: Optimizing eDNA sampling for detecting multiple AIS
 
-Annual Minnesota Chapter Meeting of the American Fisheries Society
+International Association of Great Lakes Research, Toronto CA
+
+N/A
+
+2023
+
+**\*Rounds C**, Arnold T, Dumke J, Chun CL, Larson E, Totsch A, Garcia S, Hansen GJA.
+
+
+Teaching {data-icon=chalkboard}
+--------------------------------------------------------------------------------
+
+### Teaching Assistant — Analysis of Populations (FW 5051, 4 credits)
+
+University of Minnesota Twin Cities
+
+St. Paul, MN
+
+Spring 2024
+
+### Guest Lecturer — Occupancy Model Application (FW 5051)
+
+University of Minnesota Twin Cities
+
+St. Paul, MN
+
+2026
+
+### Guest Lecturer — Midwestern Fishery Bright Spots (FW 2001 & FW 4107)
+
+University of Minnesota Twin Cities
+
+St. Paul, MN
+
+2024
+
+### Guest Speaker — AP Biology Classes, Minneapolis South High School
+
+Minneapolis, MN
+
+N/A
+
+2021 - 2025
+
+*"Limnology, aquatic invasive species, and everything in between"*
+
+
+
+ Select Awards & Recognition {data-icon=award}
+--------------------------------------------------------------------------------
+
+### John Skinner Memorial Fund — American Fisheries Society
+
+N/A
+
+N/A
+
+2024
+
+
+### Baldwin Fishery Science Scholarship ($3,000) — IAGLR
+
+N/A
 
 N/A
 
 2022
 
-**Rounds C**, Ruzich J, Hansen GJA.
 
-### Limnology, aquatic invasive species, and everything in between
+Science Communication & Outreach {data-icon=bullhorn}
+--------------------------------------------------------------------------------
 
-Minneapolis, MN
+### "SCIENCE SUNDAY: LAKES ARE ALIVE!" — Performance Organizer
 
-2021, 2022, 2023
+[Minnesota Art Shanty Projects](https://artshantyprojects.org/portfolio/science-sunday-lakes-are-alive/)
 
-Guest Speaker for Four AP Bio Classes
+N/A
+
+2026
+
+### Opening Conversation with Young Professionals
+
+Opening Plenary, MN DNR Roundtable hosted by Commissioner Sarah Strommen & Governor Tim Walz
+
+N/A
+
+2024
+
+### Star Tribune — "Scientists warn federal funding cuts could undermine walleye recovery in Minnesota"
+
+[Star Tribune](https://www.startribune.com/scientists-warn-federal-funding-cuts-could-undermine-walleye-recovery-in-minnesota/601542187)
+
+N/A
+
+2024
+
+### "Effects of anomalous Ice-Off in Temperate Lakes" — UMN Sciences Spotlight
+
+University of Minnesota
+
+N/A
+
+May 2024
+
+### MAISRC Showcase — "Optimizing eDNA for multiple AIS"
+
+Minnesota Aquatic Invasive Species Research Center
+
+N/A
+
+2021 - 2023
+
+### "Minnesota Lake Ice" — UMN Extension Master Naturalist Classes
+
+University of Minnesota Extension
+
+N/A
+
+2022 - 2023
+
+### "Loss of Lake Ice Cover in Minnesota" — UMN Sciences Spotlight
+
+University of Minnesota
+
+N/A
+
+May 2022
 
 
-### Digitizing Lake depth data using ImageJ
+Service {data-icon=handshake}
+--------------------------------------------------------------------------------
 
-Annual Minnesota Chapter Meeting of the American Fisheries Society
+### Peer Reviewer
 
-Wilmar, MN
+Journals: Minnesota Undergraduate Research & Academic Journal (3), Neobiota (1), Canadian Journal of Fisheries & Aquatic Sciences (1), Environmental DNA (1), Canadian Water Resources Journal (1)
 
-2020
+N/A
 
-**Rounds C**, Vitense K, Hansen GJA.
+Current
 
-###  University researchers and Minnesota Master Naturalists study early life history of native mussel species
+### MN Science Fair — AFS Judge
 
-Annual Minnesota Chapter Meeting of the American Fisheries Society
+American Fisheries Society
 
-Wilmar, MN
+N/A
 
-2020
+2026
 
-**Rounds C**, Hove M, Carrow K, Donna L, Binkley S, Deetz S, and D Zerwas Jr.
+### DNR Roundtable Moderator
+
+Minnesota DNR
+
+N/A
+
+2024 - 2025
+
+### National Adaptation Forum Moderator & Volunteer
+
+N/A
+
+N/A
+
+2024
+
+### Field Guides Undergraduate Mentor
+
+University of Minnesota
+
+N/A
+
+Present - 2021
+
+### UMN Conservation Sciences Seminar Board
+
+University of Minnesota
+
+N/A
+
+2024 - 2021
+
+### Student Planning Committee — Joint Aquatic Sciences Meeting
+
+N/A
+
+N/A
+
+2022 - 2021
+
+### Sanneh Foundation Volunteer
+
+N/A
+
+N/A
+
+Present - 2020
+
+### Ecology and R Tutor
+
+University of Minnesota
+
+N/A
+
+2022 - 2020
+
+### Fisheries and Wildlife Club — Vice President
+
+University of Minnesota Twin Cities
+
+N/A
+
+2020 - 2019
+
+### Club Soccer — Communications Officer
+
+University of Minnesota Twin Cities
+
+N/A
+
+2020 - 2018
 
 
-## Licenses/Certifications
+Professional Memberships {data-icon=id-card}
+--------------------------------------------------------------------------------
 
-SSI Advanced SCUBA, NITROX and Deepwater, ECO-diver Certifications  
-Minnesota Boater Certification  
-First AID and CPR Certification  
+### American Society of Limnology and Oceanography
 
+N/A
 
-## Service
+N/A
 
-Reviewer: [Minnesota Undergraduate Research and Academic Journal](https://pubs.lib.umn.edu/index.php/muraj/about), Neobiota  
-Field Guides Mentorship Program					        
-Step-Up Program Mentor  
-National Adaptation Forum Moderator and Volunteer  
-[UMN Conservation Sciences Seminar Board](https://sites.google.com/umn.edu/conservationsciencesseminar/home)  
-Student Planning Commitee - Joint Aquatic Sciences Meeting  
-Sanneh Foundation volunteer  
-Ecology and R tutor							          
-Fisheries and Wildlife Club Vice President, UMNTC		        
-Club soccer communications officer, UMNTC			         
+Current
 
+### Society of Freshwater Science
 
+N/A
 
+N/A
+
+Current
+
+### American Fisheries Society
+
+Minnesota Chapter | Percid Chapter | North Central Technical Committee
+
+N/A
+
+Current
 
