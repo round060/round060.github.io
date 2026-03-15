@@ -241,7 +241,7 @@ Hansen GJA, Ruzich JK, Krabbenhoft CA, Kundel H, Mahlum S, **Rounds CI**, Van Pe
 Grants & Fellowships {data-icon=trophy}
 --------------------------------------------------------------------------------
 
-### Doctoral Dissertation Fellowship — $26,000
+### Doctoral Dissertation Fellowship 
 
 University of Minnesota Twin Cities
 
@@ -251,7 +251,7 @@ N/A
 
 *Spot the difference: Implications of fishery bright spots and dark spots for climate change adaptation.*
 
-### Identifying Climate-Resilient Fisheries to Guide Minnesota Lake Management — $1,023,720
+### Identifying Climate-Resilient Fisheries to Guide Minnesota Lake Management 
 
 Environment and Natural Resources Trust Fund
 
@@ -261,7 +261,7 @@ N/A
 
 Hansen GJA, Mosley CM, **Rounds CI**, Embke HE. (7/2026 – 7/2029)
 
-### Moos Aquatic Biology Fellowship — $9,000
+### Moos Aquatic Biology Fellowship 
 
 Freshwater Sciences, University of Minnesota
 
@@ -271,7 +271,7 @@ N/A
 
 *Optimizing eDNA for Multiple AIS.*
 
-### Undergraduate Research Opportunities Program — $1,800
+### Undergraduate Research Opportunities Program 
 
 University of Minnesota Twin Cities
 
@@ -368,21 +368,14 @@ St. Paul, MN
 
 Spring 2024
 
-### Guest Lecturer — Occupancy Model Application (FW 5051)
+### Guest Lecturer — FW 2001, FW 4107 and FW 5051
 
 University of Minnesota Twin Cities
 
 St. Paul, MN
 
-2026
+2024 - 2026
 
-### Guest Lecturer — Midwestern Fishery Bright Spots (FW 2001 & FW 4107)
-
-University of Minnesota Twin Cities
-
-St. Paul, MN
-
-2024
 
 ### Guest Speaker — AP Biology Classes, Minneapolis South High School
 
@@ -408,7 +401,7 @@ N/A
 2024
 
 
-### Baldwin Fishery Science Scholarship ($3,000) — IAGLR
+### Baldwin Fishery Science Scholarship — IAGLR
 
 N/A
 
@@ -488,14 +481,6 @@ N/A
 
 Current
 
-### MN Science Fair — AFS Judge
-
-American Fisheries Society
-
-N/A
-
-2026
-
 ### DNR Roundtable Moderator
 
 Minnesota DNR
@@ -512,13 +497,6 @@ N/A
 
 2024
 
-### Field Guides Undergraduate Mentor
-
-University of Minnesota
-
-N/A
-
-Present - 2021
 
 ### UMN Conservation Sciences Seminar Board
 
@@ -536,21 +514,6 @@ N/A
 
 2022 - 2021
 
-### Sanneh Foundation Volunteer
-
-N/A
-
-N/A
-
-Present - 2020
-
-### Ecology and R Tutor
-
-University of Minnesota
-
-N/A
-
-2022 - 2020
 
 ### Fisheries and Wildlife Club — Vice President
 
@@ -559,14 +522,6 @@ University of Minnesota Twin Cities
 N/A
 
 2020 - 2019
-
-### Club Soccer — Communications Officer
-
-University of Minnesota Twin Cities
-
-N/A
-
-2020 - 2018
 
 
 Professional Memberships {data-icon=id-card}
