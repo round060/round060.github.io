@@ -8,6 +8,9 @@ output:
 ```{css, echo=FALSE}
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
+
 body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #2c3e50; }
 h1, h2 { font-family: 'Lora', serif; }
 
@@ -87,7 +90,11 @@ h1, h2 { font-family: 'Lora', serif; }
 }
 
 @media (max-width: 600px) {
-  .photo-row { grid-template-columns: 1fr; }
+  .page-header { padding: 0 16px; margin-top: 32px; }
+  .section-label { margin-left: 16px; margin-right: 16px; }
+  .photo-grid { margin: 24px 16px; }
+  .photo-row { grid-template-columns: 1fr; gap: 16px; }
+  .photo-card img { height: 220px; }
 }
 ```
 

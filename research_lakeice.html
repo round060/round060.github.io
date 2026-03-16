@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>research_lakeice.knit</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Christopher Rounds</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Recent Work
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Publications.html">Publications</a>
+    </li>
+    <li>
+      <a href="./mn/lake_ice_flexdashboard.html">Minnesota Lake Ice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="research_brightspots.html">Fishery Bright Spots</a>
+    </li>
+    <li>
+      <a href="research_lakeice.html">Lake Ice Phenology</a>
+    </li>
+    <li>
+      <a href="research_edna.html">Aquatic Invasive Species &amp; eDNA</a>
+    </li>
+    <li>
+      <a href="research_bathymetry.html">Lake Bathymetry</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resume.html">CV / Resume</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="contact.html">Contact</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #2c3e50; }
+h1, h2, h3 { font-family: 'Lora', serif; }
+
+.research-page { max-width: 760px; margin: 48px auto 80px auto; padding: 0 16px; }
+.back-link { display: inline-block; margin-bottom: 32px; font-size: 0.9em; color: #4a7c59; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+.research-page h1 { font-size: 2em; color: #1a2e22; margin-bottom: 6px; }
+.tag { display: inline-block; background: #e8f4ee; color: #2e7d5e; font-size: 0.78em; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 32px; }
+.section-head { font-size: 0.78em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #4a7c59; border-bottom: 1px solid #dde5db; padding-bottom: 6px; margin: 36px 0 14px 0; }
+.research-page p { font-size: 1.05em; line-height: 1.75; color: #3a4a40; margin-bottom: 14px; }
+.placeholder { background: #f0f4f1; border-left: 3px solid #4a7c59; padding: 14px 18px; border-radius: 0 6px 6px 0; font-size: 0.95em; color: #5a7a65; font-style: italic; margin-bottom: 14px; }
+
+/* ── Publication cards ── */
+.pub-card {
+  background: #fff;
+  border: 1px solid #dde5db;
+  border-radius: 8px;
+  padding: 24px 26px;
+  margin-bottom: 20px;
+}
+
+.pub-card-number {
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4a7c59;
+  margin-bottom: 8px;
+}
+
+.pub-card h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.05em;
+  color: #1a2e22;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+}
+
+.pub-card h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(26,46,34,0.25);
+  text-underline-offset: 3px;
+}
+
+.pub-card h3 a:hover { text-decoration-color: #1a2e22; }
+
+.pub-card .pub-journal {
+  font-style: italic;
+  color: #5a7a65;
+  font-size: 0.92em;
+  margin-bottom: 10px;
+}
+
+.pub-card .pub-authors {
+  font-size: 0.88em;
+  color: #6a8a75;
+  margin-bottom: 14px;
+}
+
+.pub-card .pub-authors strong { color: #2c3e50; }
+
+.pub-desc {
+  font-size: 0.97em;
+  line-height: 1.7;
+  color: #3a4a40;
+  border-top: 1px solid #edf2ee;
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+/* ── Figures ── */
+.figure-block {
+  margin: 28px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.09);
+  background: #fff;
+  border: 1px solid #dde5db;
+  max-width: 520px;
+}
+
+.figure-block img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.figure-caption {
+  padding: 12px 16px;
+  font-size: 0.88em;
+  color: #5a7a65;
+  line-height: 1.55;
+  border-top: 1px solid #dde5db;
+}
+
+/* ── Section divider between pub blocks ── */
+.pub-section-label {
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1a2e22;
+  margin: 40px 0 16px 0;
+}
+
+@media (max-width: 600px) {
+  .research-page { padding: 0 12px; }
+  .pub-card { padding: 18px; }
+}
+</style>
+<div class="research-page">
+  <a class="back-link" href="index.html">&#8592; Back to Home</a>
+
+  <h1>Lake Ice Phenology</h1>
+  <div class="tag">PhD Research</div> 
+
+  <div class="section-head">Background</div>
+  <p>
+    Lake ice is a sentinel of climate change TRhe timing of ice formation and breakup integrates winter air temperatures and shapes many under appreciated aspects of lake ecology. Minnesota is the land of 10,000 lakes, with just as many ice-on, ice-off and ice duration records. Despite growing evidence of climate-driven ice loss globally, understanding how trends vary across lakes and whether changes in ice timing cascade through food webs to affect fish has remained largely unresolved at landscape scales. My work in this area spans two related questions: how has ice cover changed across Minnesota's lakes over the past 70+ years, and what do those changes mean for the fish and plankton communities that depend on seasonal ice cycles?
+  </p>
+
+  <!-- ═══════════════════════════════════════════
+       PAPER 1 — Ice Phenology
+  ════════════════════════════════════════════ -->
+  <div class="pub-section-label">Paper 1 &mdash; Ice Cover Trends</div>
+
+  <div class="pub-card">
+    <div class="pub-card-number">Publication</div>
+    <h3>
+      <a href="https://doi.org/10.1002/lol2.70015" target="_blank">
+        Variable phenology but consistent loss of ice cover on 1213 Minnesota lakes
+      </a>
+    </h3>
+    <div class="pub-journal">Limnology and Oceanography Letters, 2025</div>
+    <div class="pub-authors">
+      Walsh JR, <strong>Rounds CI</strong>, Vitense K, Masui HK, Blumenfeld KA, Boulay PJ, Thomas SM, Honsey AE, Blinick NS, Rude CL, Bacon JA, LaRoque AA, Le&#227;o TCC, &amp; Hansen GJA.
+    </div>
+    <div class="pub-desc">
+      <div class="placeholder">Lake ice cover is declining globally, and this study offers a comprehensive examinations of that trend. Using 74 years of ice phenology data from 1213 lakes in Minnesota, we find that ice cover duration declined at a rate of approximately 2 days per decade, amounting to roughly 14 days of total loss over the study period. Rather than accelerating as some shorter term studies have suggested, the rate of decline appeared broadly linear, though variability in ice phenology increased over time.
+A key finding was that despite substantial year to year variation across lakes, only 10 to 20 percent of lakes deviated meaningfully from statewide trends, suggesting that regional climate forcing drives most of the signal. Our study also highlights an important methodological point: studies that use short time windows or fail to recieve account for synchronous annual variation risk overestimating or mischaracterizing rates of ice loss. Robust trend detection required at least 40 years of data. These results align closely with recent global estimates of ice loss and suggest that reports of accelerating decline may partly reflect increasing variance rather than a genuine speedup in the underlying trend.</div>
+    </div>
+  </div>
+
+  <div class="figure-block">
+    <img src="figures/ice_phenology.jpg" alt="Ice phenology trends across Minnesota lakes">
+    <div class="figure-caption">
+      <strong>Figure 1.</strong> Long-term trends in ice cover duration (a–b), day of ice formation (c–d), and day of ice breakup (e–f) across Minnesota lakes from 1950–2024. Left panels show estimated trends; right panels show estimated rates of change (days/year).
+    </div>
+  </div>
+
+  <div class="figure-block">
+    <img src="figures/ice_timeframe.jpg" alt="Ice cover trends across different time frames">
+    <div class="figure-caption">
+      <strong>Figure 2.</strong> Estimated trends (a) and rates of change (b) in ice cover duration across rolling time frames of 10–74 years. Darker red lines indicate stronger negative trends; results show that ice loss signals become clearer and more consistent as time frame length increases.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAPER 2 — Walleye Phenology
+  ════════════════════════════════════════════ -->
+  <div class="pub-section-label">Paper 2 &mdash; Cascading Effects on Fish &amp; Food Webs</div>
+
+  <div class="pub-card">
+    <div class="pub-card-number">Publication</div>
+    <h3>
+      <a href="https://doi.org/10.1002/ecs2.70472" target="_blank">
+        Phenology, food webs, and fish: The effects of shifted ice phenology across multiple trophic levels
+      </a>
+    </h3>
+    <div class="pub-journal">Ecosphere, 2025</div>
+    <div class="pub-authors">
+      <strong>Rounds CI</strong>, Manske J, Feiner ZS, Walsh JR, Polik C, &amp; Hansen GJA.
+    </div>
+    <div class="pub-desc">
+      <div class="placeholder">Our next paper and the first chapter of my PhD investigates how shifts in winter and spring phenology ripple through lake food webs, from algae to walleye populations. We used diverse datasets spanning decades of monitoring across ice off timing, phytoplankton, zooplankton, walleye spawning, and walleye abundance, we used generalized additive models to answer: when ice breaks up earlier than usual, what happens to everything downstream?
+We found anomalously early ice off triggered earlier blooms of diatoms, dinoflagellates, and chrysophytes, and earlier peaks in cyclopoid, Daphnia, and Diaphanosoma zooplankton. Walleye spawning also shifted earlier, but critically, zooplankton and fish were not able to track the most extreme early ice off events the way phytoplankton could. This absense of tracking at higher trophic levels is the crux of the problem, when the base of the food web advances phenologically but the fish that depend on it cannot keep pace, mismatches emerge that have consequences for fish recruitment and survival.
+Those consequences were substantial. Early ice off was associated with a 22 percent reduction in age 0 walleye recruitment and a 14 percent decrease in adult walleye abundance relative to long term averages. For a species as ecologically and economically important as walleye in Minnesota, findings like these carry direct implications for fisheries management. We highlight that climate driven disruptions to winter and spring timing may fundamentally reshape temperate lake ecosystems in ways that are difficult to manage or reverse.</div>
+    </div>
+  </div>
+
+  <div class="figure-block">
+    <img src="figures/wae_phenology.jpg" alt="Walleye spawning phenology and ice-off anomaly">
+    <div class="figure-caption">
+      <strong>Figure 3.</strong> Relationships between ice-off anomaly and (A) walleye peak spawning day of year, (B) fall age-0 walleye catch, and (C) age-class specific recruitment across estimated ages 2–12. Earlier ice-off is associated with earlier spawning but does not consistently improve recruitment.
+    </div>
+  </div>
+
+  <div class="figure-block">
+    <img src="figures/wae_phyto_phenology.jpg" alt="Zooplankton phenology under different ice-off scenarios">
+    <div class="figure-caption">
+      <strong>Figure 4.</strong> Modeled zooplankton (cyclopoid and <em>Daphnia</em>) abundance across the open-water season under early (A), average (B), and late (C) ice-off scenarios. The timing of walleye spawning relative to the <em>Daphnia</em> peak shifts with ice-off timing, with implications for larval walleye feeding success.
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

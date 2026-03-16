@@ -9,6 +9,16 @@ navbar:
           href: Publications.html
         - text: "Minnesota Lake Ice"
           href: ./mn/lake_ice_flexdashboard.html
+    - text: "Research"
+      menu:
+        - text: "Fishery Bright Spots"
+          href: research_brightspots.html
+        - text: "Lake Ice Phenology"
+          href: research_lakeice.html
+        - text: "Aquatic Invasive Species & eDNA"
+          href: research_edna.html
+        - text: "Lake Bathymetry"
+          href: research_bathymetry.html
     - text: "CV / Resume"
       href: resume.html
     - text: "About"

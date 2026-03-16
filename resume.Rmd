@@ -90,7 +90,7 @@ Minneapolis, MN
 *Minors: Computer Science, GIS, Marine Biology*
 
 
-Research & Professional Experience {data-icon=laptop}
+Recent Professional Experience {data-icon=laptop}
 --------------------------------------------------------------------------------
 
 ### Climate Change Policy & Planning Student Worker
@@ -130,28 +130,6 @@ Aug 2021 - Jun 2019
 - Independently developed an ImageJ-based method to extract area-at-depth data from bathymetric maps; applied to 1,000+ lakes in MN, WI, and SD.
 - Created R scripts to compare seagrass abundance from GoPro footage vs. side-scanning sonar estimates.
 - Collected fish and invertebrate samples using kick netting, ponars, electrofishing, and gill netting; processed samples for stable isotope analysis.
-
-### Undergraduate Research Assistant
-
-Minnesota Native Mussel Project, University of Minnesota
-
-St. Paul, MN
-
-Aug 2020 - Jun 2018
-
-- Seined, snorkeled, and electrofished in stream and lake habitats to capture fish and mussels for host suitability trials.
-- Assisted in building, programming, and testing a submersible robot for recording mussel-fish interactions in riverine environments.
-
-### Life Support Technician
-
-Como Zoo Conservatory
-
-St. Paul, MN
-
-Sep 2019 - Jan 2019
-
-- Maintained ozone generators, filtration and sterilization systems, air compressors, and valve actuators for exhibits housing animals from pinnipeds to fish.
-- Performed water chemistry tests (pH, salinity, ammonia, nitrites, nitrates, DO, phosphates) to ensure safe conditions for sensitive animals.
 
 
 Refereed Publications {data-icon=file}
@@ -421,6 +399,14 @@ N/A
 
 2026
 
+### Star Tribune — "Scientists warn federal funding cuts could undermine walleye recovery in Minnesota"
+
+[Star Tribune](https://www.startribune.com/scientists-warn-federal-funding-cuts-could-undermine-walleye-recovery-in-minnesota/601542187)
+
+N/A
+
+2026
+
 ### Opening Conversation with Young Professionals
 
 Opening Plenary, MN DNR Roundtable hosted by Commissioner Sarah Strommen & Governor Tim Walz
@@ -428,22 +414,6 @@ Opening Plenary, MN DNR Roundtable hosted by Commissioner Sarah Strommen & Gover
 N/A
 
 2024
-
-### Star Tribune — "Scientists warn federal funding cuts could undermine walleye recovery in Minnesota"
-
-[Star Tribune](https://www.startribune.com/scientists-warn-federal-funding-cuts-could-undermine-walleye-recovery-in-minnesota/601542187)
-
-N/A
-
-2024
-
-### "Effects of anomalous Ice-Off in Temperate Lakes" — UMN Sciences Spotlight
-
-University of Minnesota
-
-N/A
-
-May 2024
 
 ### MAISRC Showcase — "Optimizing eDNA for multiple AIS"
 
@@ -461,14 +431,6 @@ N/A
 
 2022 - 2023
 
-### "Loss of Lake Ice Cover in Minnesota" — UMN Sciences Spotlight
-
-University of Minnesota
-
-N/A
-
-May 2022
-
 
 Service {data-icon=handshake}
 --------------------------------------------------------------------------------
@@ -480,22 +442,6 @@ Journals: Minnesota Undergraduate Research & Academic Journal (3), Neobiota (1),
 N/A
 
 Current
-
-### DNR Roundtable Moderator
-
-Minnesota DNR
-
-N/A
-
-2024 - 2025
-
-### National Adaptation Forum Moderator & Volunteer
-
-N/A
-
-N/A
-
-2024
 
 
 ### UMN Conservation Sciences Seminar Board

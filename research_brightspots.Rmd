@@ -1,0 +1,37 @@
+---
+title: ""
+output:
+  html_document:
+    theme: flatly
+---
+
+```{css, echo=FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #2c3e50; }
+h1, h2, h3 { font-family: 'Lora', serif; }
+
+.research-page { max-width: 760px; margin: 48px auto 80px auto; padding: 0 16px; }
+.back-link { display: inline-block; margin-bottom: 32px; font-size: 0.9em; color: #4a7c59; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+.research-page h1 { font-size: 2em; color: #1a2e22; margin-bottom: 6px; }
+.tag { display: inline-block; background: #e8f4ee; color: #2e7d5e; font-size: 0.78em; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 32px; }
+.section-head { font-size: 0.78em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #4a7c59; border-bottom: 1px solid #dde5db; padding-bottom: 6px; margin: 36px 0 14px 0; }
+.research-page p { font-size: 1.05em; line-height: 1.75; color: #3a4a40; margin-bottom: 14px; }
+.placeholder { background: #f0f4f1; border-left: 3px solid #4a7c59; padding: 14px 18px; border-radius: 0 6px 6px 0; font-size: 0.95em; color: #5a7a65; font-style: italic; margin-bottom: 14px; }
+```
+
+```{=html}
+<div class="research-page">
+  <a class="back-link" href="index.html">&#8592; Back to Home</a>
+
+  <h1>Fishery Bright Spots</h1>
+  <div class="tag">PhD Research</div>
+
+  <div class="section-head">Currently in progress!</div>
+
+  <div class="section-head">Related Publications</div>
+  <div class="placeholder">
+    Embke HS, Feiner ZS, Hansen GJA, Isermann D, Jensen OP, <strong>Rounds CI</strong>, Smith QC, &amp; Vander Zanden MJV. (2025). Bright spots for advancing ecological understanding and conservation decision-making. <em>Conservation Biology</em>.
+  </div>
+</div>
+```

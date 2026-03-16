@@ -9,10 +9,14 @@ output:
 ```{css, echo=FALSE}
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: hidden; }
+
 body {
   font-family: 'DM Sans', sans-serif;
   color: #2c3e50;
   background: #fafaf8;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 { font-family: 'Lora', serif; }
@@ -180,14 +184,116 @@ h1, h2, h3 { font-family: 'Lora', serif; }
 }
 
 @media (max-width: 650px) {
-  .carousel-wrap { height: 300px; }
-  .hero { flex-direction: column; gap: 28px; }
-  .hero-photo { width: 100%; }
-  .hero-photo img { width: 100%; height: 260px; }
+  .carousel-wrap { height: 260px; }
+
+  .hero {
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 16px 24px 16px;
+  }
+
+  .hero-photo {
+    width: 140px;
+    margin: 0 auto;
+  }
+
+  .hero-photo img {
+    width: 140px;
+    height: auto;
+  }
+
+  .hero-text h1 { font-size: 1.7em; }
+  .hero-text .title-line { font-size: 0.9em; }
+  .hero-text p { font-size: 0.98em; }
+
+  .divider { margin: 0 16px 24px 16px; }
+
+  .interests { padding: 0 16px 36px 16px; }
+
+  .research-section { padding: 0 16px 48px 16px; }
+  .research-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Research panels ── */
+.research-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.research-label {
+  font-size: 0.78em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4a7c59;
+  border-bottom: 1px solid #dde5db;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+
+.research-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.research-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #dde5db;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.research-card:hover {
+  border-color: #4a7c59;
+  box-shadow: 0 6px 24px rgba(74,124,89,0.12);
+  transform: translateY(-3px);
+  text-decoration: none;
+  color: inherit;
+}
+
+.research-icon {
+  font-size: 1.4em;
+  color: #4a7c59;
+  margin-bottom: 12px;
+}
+
+.research-card-title {
+  font-family: 'Lora', serif;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #1a2e22;
+  margin-bottom: 8px;
+}
+
+.research-card-desc {
+  font-size: 0.92em;
+  color: #4a5e52;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.research-card-arrow {
+  margin-top: 16px;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: #4a7c59;
+  transition: gap 0.2s ease;
+}
+
+.research-card:hover .research-card-arrow {
+  color: #2e7d5e;
 }
 ```
 
 ```{=html}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- CAROUSEL -->
 <div class="carousel-wrap" id="mainCarousel">
@@ -263,11 +369,11 @@ h1, h2, h3 { font-family: 'Lora', serif; }
   </div>
   <div class="hero-text">
     <h1>Christopher Rounds</h1>
-    <div class="title-line">PhD Student &middot; Fisheries &amp; Aquatic Biology &middot; University of Minnesota</div>
+    <div class="title-line">PhD Candidate &middot; Fisheries &amp; Aquatic Biology &middot; University of Minnesota</div>
     <p>
-      I am an aquatic ecologist in the <a href="https://conssci.umn.edu/">Conservation Sciences Department</a> at the University of Minnesota Twin Cities, working in <a href="https://gretchenhansen.squarespace.com/">Gretchen Hansen's lab</a>. My PhD research focuses on <strong>fishery bright spots</strong>. This involves understanding where fish populations outperform expectations and what factors drive that unexpected resilience.
+      I am an aquatic ecologist in the <a href="https://conssci.umn.edu/">Conservation Sciences Department</a> at the University of Minnesota Twin Cities, working in <a href="https://gretchenhansen.squarespace.com/">Gretchen Hansen's lab</a>. My PhD research focuses on <strong>fishery bright spots</strong>. This consists of understanding where fish populations outperform expectations and what factors drive that unexpected resilience.
     </p>
-    Adittionally, I am a student worker at the Minnesota Department of Natural Resources working on climate change policy and planning. This role is really diverse but ends up working a lot on Fisheries and Wildlife division climate projects and public scoping and engagement. 
+    I also have worked part time at the Minnesota Department of Natural Resources since 2024. My role at DNR is a Climate Change Policy and Planning Student Worker. Through this position I get to help with a variety of projects including managment plan development, public engagement and internal climate communication and training. 
     <p>
     <p>
       For my master's, I studied how <strong>environmental DNA (eDNA)</strong> can be used to detect aquatic invasive species, funded through the <a href="https://maisrc.umn.edu/edna-monitoring">Minnesota Aquatic Invasive Species Research Center</a>.
@@ -279,7 +385,42 @@ h1, h2, h3 { font-family: 'Lora', serif; }
 
 <div class="interests">
   <p>
-    Outside the lab, you'll find me cooking ambitious meals, ruining my knees on the soccer pitch, or exploring the outdoors. Video games also get a fair share of my evenings.
+    Outside the lab, you'll find me cooking, ruining my knees on the soccer pitch, or exploring the outdoors with my small but rambunctious dog. Video games, sports (wolves back!) and reading also get a fair share of my evenings.
   </p>
+</div>
+
+<div class="research-section">
+  <div class="research-label">Research</div>
+  <div class="research-grid">
+
+    <a class="research-card" href="research_brightspots.html">
+      <div class="research-icon"><i class="fas fa-chart-line"></i></div>
+      <div class="research-card-title">Fishery Bright Spots</div>
+      <div class="research-card-desc">Understanding why some fish populations thrive beyond expectations and what management and environmental factors drive unexpected resilience.</div>
+      <div class="research-card-arrow">Learn more &#8594;</div>
+    </a>
+
+    <a class="research-card" href="research_lakeice.html">
+      <div class="research-icon"><i class="fas fa-snowflake"></i></div>
+      <div class="research-card-title">Lake Ice Phenology</div>
+      <div class="research-card-desc">Tracking long-term changes in lake ice cover across Minnesota and exploring how shifting ice phenology cascades through aquatic food webs.</div>
+      <div class="research-card-arrow">Learn more &#8594;</div>
+    </a>
+
+    <a class="research-card" href="research_edna.html">
+      <div class="research-icon"><i class="fas fa-dna"></i></div>
+      <div class="research-card-title">Aquatic Invasive Species &amp; eDNA</div>
+      <div class="research-card-desc">Using environmental DNA to detect aquatic invasive species earlier and more efficiently, optimizing sampling protocols across multiple species simultaneously.</div>
+      <div class="research-card-arrow">Learn more &#8594;</div>
+    </a>
+
+    <a class="research-card" href="research_bathymetry.html">
+      <div class="research-icon"><i class="fas fa-water"></i></div>
+      <div class="research-card-title">Lake Bathymetry</div>
+      <div class="research-card-desc">Developing scalable methods to digitize lake depth data from historical maps, enabling large-scale analyses of habitat and thermal structure.</div>
+      <div class="research-card-arrow">Learn more &#8594;</div>
+    </a>
+
+  </div>
 </div>
 ```
