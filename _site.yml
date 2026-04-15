@@ -9,6 +9,8 @@ navbar:
           href: Publications.html
         - text: "Minnesota Lake Ice"
           href: ./mn/lake_ice_flexdashboard.html
+        - text: "MN Lake Data Viewer"
+          href: https://christopher-rounds.shinyapps.io/shp_water_lake_basin_morphology/
     - text: "Research"
       menu:
         - text: "Fishery Bright Spots"
