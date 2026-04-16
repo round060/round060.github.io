@@ -111,13 +111,13 @@ h1, h2 { font-family: 'Lora', serif; }
 <div class="photo-grid">
   <div class="photo-row">
     <div class="photo-card">
-      <img src="photos/seining.JPG" alt="Seining in the St. Croix River">
+      <img src="photos/seining.jpg" alt="Seining in the St. Croix River">
       <div class="photo-caption">
         Seining in the upper St. Croix River with high school students, Minnesota Master Naturalists, and Mark Hove. The fish we collected were used in freshwater mussel host suitability trials &#8212; probably the best experience an undergrad could ask for.
       </div>
     </div>
     <div class="photo-card">
-      <img src="photos/sunny.JPG" alt="Sunfish in breeding colors">
+      <img src="photos/sunny.jpg" alt="Sunfish in breeding colors">
       <div class="photo-caption">
         A stunning sunfish captured during sampling. Look at those breeding colors!
       </div>
@@ -151,6 +151,21 @@ h1, h2 { font-family: 'Lora', serif; }
     <div class="photo-card">
       <img src="photos/efishing.JPG" alt="Electrofishing in Northern Wisconsin">
       <div class="photo-caption">Electrofishing surveys &#8212; a staple of fisheries fieldwork.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Fieldwork &middot; Underwater!</div>
+
+<div class="photo-grid">
+  <div class="photo-row">
+    <div class="photo-card">
+      <img src="photos/divingzebs.JPG" alt="Zebra mussel quadrats">
+      <div class="photo-caption">Surveying zebra mussels.</div>
+    </div>
+    <div class="photo-card">
+      <img src="photos/IMG_1084.JPG" alt="Underwater forests">
+      <div class="photo-caption">Some Pondweed in the sunlight.</div>
     </div>
   </div>
 </div>
